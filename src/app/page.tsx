@@ -1,6 +1,8 @@
+import Calendar from "./components/Calendar"
+
 function page() {
   return (
-    <div></div>
+    <Calendar />
   )
 }
 
