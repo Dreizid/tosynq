@@ -18,7 +18,6 @@ function page() {
         currentPath={usePathname()}
       />
       <div>
-        <Calendar />
       </div>
     </div>
   )
