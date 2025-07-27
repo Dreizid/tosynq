@@ -1,9 +1,27 @@
-import Calendar from "./components/Calendar"
+"use client"
+import { Calendar } from "@heroui/calendar"
+import Sidebar from "./components/Sidebar"
+import { usePathname } from "next/navigation"
 
 function page() {
   return (
-    <Calendar />
+    <div className="flex flex-row">
+      <Sidebar
+        categories={[
+          {
+            title: "Calendar",
+            links: [{
+              label: "Today",
+              href: "/"
+            }]
+          }
+        ]}
+        currentPath={usePathname()}
+      />
+      <div>
+        <Calendar />
+      </div>
+    </div>
   )
 }
-
 export default page
