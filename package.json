@@ -9,9 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroui/calendar": "^2.2.23",
+    "@heroui/react": "^2.8.1",
+    "@heroui/system": "^2.4.19",
+    "@heroui/theme": "^2.4.19",
     "dayjs": "^1.11.13",
     "dexie": "^4.0.11",
     "dexie-react-hooks": "^1.1.7",
+    "framer-motion": "^12.23.9",
     "next": "15.4.2",
     "react": "19.1.0",
     "react-dom": "19.1.0"
