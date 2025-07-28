@@ -1,2 +1,42 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Light Mode */
+  --color-bg-primary: #ffffff; /* White background */
+  --color-bg-secondary: #f3f4f6; /* Light gray */
+  --color-bg-tertiary: #e5e7eb; /* Subtle gray */
+  --color-text-primary: #111827; /* Dark gray */
+  --color-text-secondary: #4b5563; /* Muted gray */
+  --color-text-accent: #2563eb; /* Blue for links */
+  --color-accent-primary: #2563eb; /* Blue for buttons */
+  --color-accent-hover: #1d4ed8; /* Hover */
+  --color-accent-active: #1e40af; /* Active */
+  --color-border-primary: #d1d5db; /* Light gray border */
+  --color-border-strong: #9ca3af; /* Stronger border */
+  --color-success: #22c55e; /* Green */
+  --color-warning: #f59e0b; /* Yellow */
+  --color-error: #ef4444; /* Red */
+  --color-info: #3b82f6; /* Blue */
+
+}
+
+/* Dark Mode */
+.dark {
+	--color-bg-primary: #121212; /* Deep black */
+	--color-bg-secondary: #1e1e1e; /* Dark gray */
+	--color-bg-tertiary: #2d2d2d; /* Slightly lighter gray */
+	--color-text-primary: #e5e5e5; /* Light gray */
+	--color-text-secondary: #a3a3a3; /* Muted gray */
+	--color-text-accent: #a3a3a3; /* Neutral gray */
+	--color-accent-primary: #4b4b4b; /* Dark gray */
+	--color-accent-hover: #636363; /* Lighter gray */
+	--color-accent-active: #3b3b3b; /* Darker gray */
+	--color-border-primary: #2d2d2d; /* Dark gray */
+	--color-border-strong: #4b4b4b; /* Slightly lighter */
+	--color-success: #15803d; /* Darker green */
+	--color-warning: #b45309; /* Darker amber */
+	--color-error: #b91c1c; /* Darker red */
+	--color-info: #4b4b4b; /* Neutral gray */
+}

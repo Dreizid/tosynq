@@ -1,23 +1,25 @@
 "use client"
-import { Calendar } from "@heroui/calendar"
 import Sidebar from "./components/Sidebar"
 import { usePathname } from "next/navigation"
+import TestSidebar from "./components/TestSidebar"
+import { CalendarCheck2, Inbox } from "lucide-react"
 
 function page() {
+  const items = [
+    {
+      icon: CalendarCheck2,
+      label: "Calendar",
+      onClick: () => { console.log("SUCSESS") },
+    },
+    {
+      icon: Inbox,
+      label: "Inbox",
+      onClick: () => { console.log("INBOX") }
+    }
+  ]
   return (
     <div className="flex flex-row">
-      <Sidebar
-        categories={[
-          {
-            title: "Calendar",
-            links: [{
-              label: "Today",
-              href: "/"
-            }]
-          }
-        ]}
-        currentPath={usePathname()}
-      />
+      <TestSidebar items={items} />
       <div>
       </div>
     </div>
