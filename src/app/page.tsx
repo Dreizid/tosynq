@@ -1,6 +1,8 @@
+import WeeklyCalendar from "./components/WeeklyCalendar"
+
 function page() {
   return (
-    <div></div>
+    <WeeklyCalendar />
   )
 }
 
