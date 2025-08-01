@@ -1,7 +1,7 @@
 import dayjs from "dayjs"
 import WeeklyDayBox from "./WeeklyDayBox"
 
-export default function WeeklyCalendar() {
+export default function WeeklyCalendar({ }) {
 
   const startOfWeek = dayjs().startOf("week")
 
