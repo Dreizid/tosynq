@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sidebar"
 import { Calendar } from "@/components/ui/calendar"
 import Link from "next/link"
+import AppCalendar from "./AppCalendar"
 
 const items = [
   {
@@ -47,8 +48,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
-            <Calendar className="[&_[role=gridcell].bg-accent]:bg-sidebar-primary [&_[role=gridcell].bg-accent]:text-sidebar-primary-foreground [&_[role=gridcell]]:w-[30px] my-4" />
-            <SidebarSeparator className="mx-0" />
+            <AppCalendar />
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
