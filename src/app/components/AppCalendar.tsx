@@ -36,6 +36,10 @@ export default function AppCalendar() {
               ? rangeIncludesDate({ from: startOfWeek(date.getDate()), to: endOfWeek(date.getDate()) }, date, true)
               : false,
         }
+      case "monthly":
+        return {}
+      default:
+        return {}
     }
   }, [range, selectedDate, selectedWeek])
 
@@ -49,6 +53,12 @@ export default function AppCalendar() {
           range_start: "[&>button]:rounded-e-[0]",
           range_end: "[&>button]:rounded-s-[0]"
         }
+      case "monthly":
+        return {
+
+        }
+      default:
+        return {}
     }
   }
 
