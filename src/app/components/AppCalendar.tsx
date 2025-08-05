@@ -15,6 +15,7 @@ export default function AppCalendar() {
   */
   const [selectedWeek, setSelectedWeek] = useState<DateRange | undefined>();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [selectedMonth, setSelectedMonth] = useState<Date | undefined>()
   const [range, setRange] = useState<RangeTypes>("single")
 
   const modifiers = useMemo(() => {
@@ -38,10 +39,23 @@ export default function AppCalendar() {
     }
   }, [range, selectedDate, selectedWeek])
 
+  const classNames = () => {
+    switch (range) {
+      case "single":
+        return {}
+      case "weekly":
+        return {
+          selected: "[&>button]:rounded-[0]",
+          range_start: "[&>button]:rounded-e-[0]",
+          range_end: "[&>button]:rounded-s-[0]"
+        }
+    }
+  }
+
   const onWeeklyClick = (day: Date, modifiers: Modifiers) => {
     if (modifiers.selected) {
       setSelectedWeek(undefined); // Clear the selection if the day is already selected
-      return;
+      return
     }
     setSelectedWeek({
       from: startOfWeek(day),
@@ -54,18 +68,22 @@ export default function AppCalendar() {
     if (modifiers.selected) {
       setSelectedDate(undefined);
     } else {
-      setSelectedDate(day);
+      setSelectedDate(day)
     }
+  }
+
+  const onMonthClick = (day: Date, modifiers: Modifiers) => {
+    if (modifiers.selected) {
+      setSelectedMonth(undefined)
+      return
+    }
+    setSelectedMonth(day)
   }
   return (
     <SidebarGroup >
       <Calendar
-        className="[&_[role=gridcell].bg-accent]:bg-background [&_[role=gridcell].bg-accent]:text-secondary-foreground [&_[role=gridcell].bg-accent]:w-full block p-0"
-        classNames={{
-          selected: "[&>button]:rounded-[0]",
-          range_start: "[&>button]:rounded-e-[0]",
-          range_end: "[&>button]:rounded-s-[0]"
-        }}
+        className="[&_[role=gridcell].bg-accent]:bg-background [&_[role=gridcell].bg-accent]:text-secondary-foreground [&_[role=gridcell].bg-accent]:w-full block p-0 bg-sidebar-primary-foreground"
+        classNames={classNames()}
         modifiers={modifiers}
         onDayClick={(day, modifiers) => {
           switch (range) {
@@ -75,13 +93,17 @@ export default function AppCalendar() {
             case "weekly":
               onWeeklyClick(day, modifiers)
               break;
+            case "monthly":
+              onMonthClick(day, modifiers)
+              break;
           }
-        }}
+        }
+        }
       />
       <SidebarSeparator className="my-4" />
-      <Select onValueChange={(value: RangeTypes) => (setRange(value))}>
+      <Select onValueChange={(value: RangeTypes) => (setRange(value))} defaultValue="single">
         <SelectTrigger>
-          <SelectValue placeholder="Range" />
+          <SelectValue placeholder="Single" />
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="single">Single</SelectItem>
