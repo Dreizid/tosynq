@@ -15,6 +15,7 @@ import {
 import { Calendar } from "@/components/ui/calendar"
 import Link from "next/link"
 import AppCalendar from "./AppCalendar"
+import SidebarCalendar from "./SidebarCalendar"
 
 const items = [
   {
@@ -48,7 +49,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
-            <AppCalendar />
+            <SidebarCalendar />
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
