@@ -8,7 +8,7 @@ import { endOfWeek, startOfWeek } from "date-fns";
 
 type RangeTypes = "single" | "weekly" | "monthly"
 
-export default function AppCalendar() {
+export default function SidebarCalendar() {
   /* TO DO:
   Add accent colors for current day in calendar 
   Fix corner for single selection
