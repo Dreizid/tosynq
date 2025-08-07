@@ -1,25 +1,25 @@
 "use client"
 import "react-big-calendar/lib/css/react-big-calendar.css"
-import { Calendar, momentLocalizer } from 'react-big-calendar'
+import { Calendar, momentLocalizer, View, Views, ViewsProps } from 'react-big-calendar'
 import moment from "moment"
 
+interface AppCalendarProps {
+  date: Date
+  view: View
+}
 const localizer = momentLocalizer(moment)
 
-export default function AppCalendar(props: {}) {
-  const events = [
-    {
-      start: new Date(),
-      end: new Date(),
-      title: "Sample Event",
-    },
-  ];
+export default function AppCalendar({ date, view }: AppCalendarProps) {
   return (
-    <div className="h-full">
+    <div className="h-[60vh] w-[60vw]">
       <Calendar
+        date={date}
+        view={view}
         localizer={localizer}
-        events={events}
         startAccessor="start"
         endAccessor="end"
+        showMultiDayTimes
+        toolbar={false}
       />
     </div>
   )

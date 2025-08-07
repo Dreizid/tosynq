@@ -5,18 +5,21 @@ import { SidebarGroup, SidebarSeparator } from "@/components/ui/sidebar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DateRange, Modifiers, rangeIncludesDate, DayPickerProps } from "react-day-picker"
 import { endOfWeek, startOfWeek } from "date-fns";
+import { useCalendar } from "../context/calendar-context";
+import { View } from "react-big-calendar";
 
 type RangeTypes = "single" | "weekly" | "monthly"
 
 export default function SidebarCalendar() {
   /* TO DO:
   Add accent colors for current day in calendar 
-  Fix corner for single selection
   */
   const [selectedWeek, setSelectedWeek] = useState<DateRange | undefined>();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedMonth, setSelectedMonth] = useState<Date | undefined>()
   const [range, setRange] = useState<RangeTypes>("single")
+
+  const { date, view, setDate, setView } = useCalendar()
 
   const modifiers = useMemo(() => {
     switch (range) {
@@ -63,6 +66,8 @@ export default function SidebarCalendar() {
   }
 
   const onWeeklyClick = (day: Date, modifiers: Modifiers) => {
+    setView("week")
+    setDate(day)
     if (modifiers.selected) {
       setSelectedWeek(undefined); // Clear the selection if the day is already selected
       return
@@ -75,6 +80,8 @@ export default function SidebarCalendar() {
   }
 
   const onDayClick = (day: Date, modifiers: Modifiers) => {
+    setView("day")
+    setDate(day)
     if (modifiers.selected) {
       setSelectedDate(undefined);
     } else {
@@ -83,6 +90,8 @@ export default function SidebarCalendar() {
   }
 
   const onMonthClick = (day: Date, modifiers: Modifiers) => {
+    setView("month")
+    setDate(day)
     if (modifiers.selected) {
       setSelectedMonth(undefined)
       return
