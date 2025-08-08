@@ -3,12 +3,10 @@ import { useMemo, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { SidebarGroup, SidebarSeparator } from "@/components/ui/sidebar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DateRange, Modifiers, rangeIncludesDate, DayPickerProps } from "react-day-picker"
+import { DateRange, Modifiers, rangeIncludesDate, DayPickerProps, Matcher } from "react-day-picker"
 import { endOfWeek, startOfWeek } from "date-fns";
 import { useCalendar } from "../context/calendar-context";
 import { View } from "react-big-calendar";
-
-type RangeTypes = "single" | "weekly" | "monthly"
 
 export default function SidebarCalendar() {
   /* TO DO:
@@ -17,120 +15,108 @@ export default function SidebarCalendar() {
   const [selectedWeek, setSelectedWeek] = useState<DateRange | undefined>();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedMonth, setSelectedMonth] = useState<Date | undefined>()
-  const [range, setRange] = useState<RangeTypes>("single")
 
   const { date, view, setDate, setView } = useCalendar()
 
   const modifiers = useMemo(() => {
-    switch (range) {
-      case "single":
+    switch (view) {
+      case "day":
         if (selectedDate) {
-          return { selected: selectedDate };
+          return {
+            selected: selectedDate,
+          };
         }
         break;
-      case "weekly":
+      case "week":
         return {
           selected: selectedWeek,
           range_start: selectedWeek?.from,
           range_end: selectedWeek?.to,
           range_middle: (date: Date) =>
-
             selectedWeek
               ? rangeIncludesDate({ from: startOfWeek(date.getDate()), to: endOfWeek(date.getDate()) }, date, true)
               : false,
-        }
-      case "monthly":
-        return {}
-      default:
-        return {}
-    }
-  }, [range, selectedDate, selectedWeek])
-
-  const classNames = () => {
-    switch (range) {
-      case "single":
-        return {}
-      case "weekly":
+        };
+      case "month":
         return {
-          selected: "[&>button]:rounded-[0]",
-          range_start: "[&>button]:rounded-e-[0]",
-          range_end: "[&>button]:rounded-s-[0]"
-        }
-      case "monthly":
+        };
+      case "work_week":
         return {
-
-        }
+        };
+      case "agenda":
+        return {
+        };
       default:
-        return {}
+        return {
+        };
     }
+  }, [view, selectedDate, selectedWeek, selectedMonth]);
+
+  const classNameMap: Record<View, DayPickerProps["classNames"]> = {
+    "month": {},
+    "week": {
+      selected: "[&>button]:rounded-[0]",
+      range_start: "[&>button]:rounded-e-[0]",
+      range_end: "[&>button]:rounded-s-[0]",
+    },
+    "work_week": {},
+    "day": {},
+    "agenda": {}
   }
 
-  const onWeeklyClick = (day: Date, modifiers: Modifiers) => {
-    setView("week")
-    setDate(day)
+  const onViewClick = <T extends Date | DateRange>(
+    view: View,
+    clickedDate: Date,
+    modifiers: Modifiers,
+    setter: (value: T | undefined) => void,
+    newDate: () => T
+  ) => {
+    console.log(view)
+    setView(view)
+    setDate(clickedDate)
     if (modifiers.selected) {
-      setSelectedWeek(undefined); // Clear the selection if the day is already selected
-      return
-    }
-    setSelectedWeek({
-      from: startOfWeek(day),
-
-      to: endOfWeek(day),
-    });
-  }
-
-  const onDayClick = (day: Date, modifiers: Modifiers) => {
-    setView("day")
-    setDate(day)
-    if (modifiers.selected) {
-      setSelectedDate(undefined);
+      setter(undefined)
     } else {
-      setSelectedDate(day)
+      setter(newDate())
     }
+    console.log(selectedWeek)
   }
 
-  const onMonthClick = (day: Date, modifiers: Modifiers) => {
-    setView("month")
-    setDate(day)
-    if (modifiers.selected) {
-      setSelectedMonth(undefined)
-      return
-    }
-    setSelectedMonth(day)
+  const viewMap: Record<View, (day: Date, modifiers: Modifiers) => void> = {
+    "month": (day, modifiers) => onViewClick("month", day, modifiers, setSelectedMonth, () => day),
+    "week": (day, modifiers) => onViewClick("week", day, modifiers, setSelectedWeek, () => ({
+      from: startOfWeek(day),
+      to: endOfWeek(day)
+    })),
+    "work_week": (day, modifiers) => onViewClick("work_week", day, modifiers, setSelectedMonth, () => day),
+    "day": (day, modifiers) => onViewClick("day", day, modifiers, setSelectedMonth, () => day),
+    "agenda": (day, modifiers) => onViewClick("agenda", day, modifiers, setSelectedMonth, () => day),
   }
+
+
   return (
     <SidebarGroup >
       <Calendar
         className="[&_[role=gridcell].bg-accent]:bg-background [&_[role=gridcell].bg-accent]:text-secondary-foreground [&_[role=gridcell].bg-accent]:w-full block p-0 bg-sidebar-primary-foreground"
-        classNames={classNames()}
+        classNames={classNameMap[view]}
         modifiers={modifiers}
-        onDayClick={(day, modifiers) => {
-          switch (range) {
-            case "single":
-              onDayClick(day, modifiers)
-              break;
-            case "weekly":
-              onWeeklyClick(day, modifiers)
-              break;
-            case "monthly":
-              onMonthClick(day, modifiers)
-              break;
-          }
-        }
-        }
+        onDayClick={(day, modifiers) => viewMap[view](day, modifiers)}
       />
       <SidebarSeparator className="my-4" />
-      <Select onValueChange={(value: RangeTypes) => (setRange(value))} defaultValue="single">
+      <Select onValueChange={(value: View) => {
+        setView(value)
+      }}
+        defaultValue="day">
         <SelectTrigger>
           <SelectValue placeholder="Single" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="single">Single</SelectItem>
-          <SelectItem value="weekly">Weekly</SelectItem>
-          <SelectItem value="monthly">Monthly</SelectItem>
+          <SelectItem value="day">Single</SelectItem>
+          <SelectItem value="week">Weekly</SelectItem>
+          <SelectItem value="month">Monthly</SelectItem>
         </SelectContent>
       </Select>
-    </SidebarGroup>
+    </SidebarGroup >
   )
 }
 
