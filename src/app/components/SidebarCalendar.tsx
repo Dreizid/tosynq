@@ -32,9 +32,9 @@ export default function SidebarCalendar() {
           selected: selectedWeek,
           range_start: selectedWeek?.from,
           range_end: selectedWeek?.to,
-          range_middle: (date: Date) =>
+          range_middle: (day: Date) =>
             selectedWeek
-              ? rangeIncludesDate({ from: startOfWeek(date.getDate()), to: endOfWeek(date.getDate()) }, date, true)
+              ? rangeIncludesDate(selectedWeek, day, true)
               : false,
         };
       case "month":
@@ -71,7 +71,6 @@ export default function SidebarCalendar() {
     setter: (value: T | undefined) => void,
     newDate: () => T
   ) => {
-    console.log(view)
     setView(view)
     setDate(clickedDate)
     if (modifiers.selected) {
@@ -79,7 +78,6 @@ export default function SidebarCalendar() {
     } else {
       setter(newDate())
     }
-    console.log(selectedWeek)
   }
 
   const viewMap: Record<View, (day: Date, modifiers: Modifiers) => void> = {
@@ -89,7 +87,7 @@ export default function SidebarCalendar() {
       to: endOfWeek(day)
     })),
     "work_week": (day, modifiers) => onViewClick("work_week", day, modifiers, setSelectedMonth, () => day),
-    "day": (day, modifiers) => onViewClick("day", day, modifiers, setSelectedMonth, () => day),
+    "day": (day, modifiers) => onViewClick("day", day, modifiers, setSelectedDate, () => day),
     "agenda": (day, modifiers) => onViewClick("agenda", day, modifiers, setSelectedMonth, () => day),
   }
 
