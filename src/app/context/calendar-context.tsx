@@ -18,8 +18,9 @@ export const useCalendar = () => {
 }
 
 export const CalendarProvider = ({ children }: { children: React.ReactNode }) => {
-  const [view, setView] = useState<View>('month')
+  const [view, setView] = useState<View>("day")
   const [date, setDate] = useState<Date>(new Date())
+
 
   return (
     <CalendarContext.Provider value={{ view, date, setView, setDate }}>
