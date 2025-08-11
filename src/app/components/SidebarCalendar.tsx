@@ -68,7 +68,7 @@ export default function SidebarCalendar() {
   return (
     <SidebarGroup >
       <Calendar
-        className="[&_[role=gridcell].bg-accent]:bg-background [&_[role=gridcell].bg-accent]:text-secondary-foreground [&_[role=gridcell].bg-accent]:w-full block p-0 bg-sidebar-primary-foreground [&_[role=gridcell]>button]:outline-none [&_[role=gridcell]>button]:ring-0"
+        className="[&_[role=gridcell].bg-accent]:bg-background [&_[role=gridcell].bg-accent]:text-secondary-foreground [&_[role=gridcell].bg-accent]:w-full block p-0 bg-sidebar-background [&_[role=gridcell]>button]:outline-none [&_[role=gridcell]>button]:ring-0"
         classNames={classNameMap[view]}
         modifiers={modifiers}
         onDayClick={(day) => onViewClick(day)}
