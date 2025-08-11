@@ -1,6 +1,6 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "../components/AppSidebar";
-import { CalendarProvider } from "../context/calendar-context";
+import { AppSidebar } from "@/app/components/AppSidebar";
+import { CalendarProvider } from "@/app/context/calendar-context";
 
 export default function RootLayout({
   children,
@@ -8,18 +8,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="">
-      <body>
-        <CalendarProvider>
-          <SidebarProvider>
-            <AppSidebar />
-            <main>
-              <SidebarTrigger />
-              {children}
-            </main>
-          </SidebarProvider>
-        </CalendarProvider>
-      </body>
-    </html>
+    <CalendarProvider>
+      <SidebarProvider>
+        <AppSidebar />
+        <main>
+          <SidebarTrigger />
+          {children}
+        </main>
+      </SidebarProvider>
+    </CalendarProvider>
   );
 }
