@@ -11,7 +11,7 @@ const localizer = momentLocalizer(moment)
 
 export default function AppCalendar({ date, view }: AppCalendarProps) {
   return (
-    <div className="h-[60vh] w-[60vw]">
+    <div className="h-[100vh] w-full">
       <Calendar
         date={date}
         view={view}
@@ -20,6 +20,8 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
         endAccessor="end"
         showMultiDayTimes
         toolbar={false}
+        step={60}
+        timeslots={1}
       />
     </div>
   )
