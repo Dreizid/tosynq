@@ -2,9 +2,9 @@
 import AppCalendar from "../components/AppCalendar"
 import { useCalendar } from "../context/calendar-context"
 function page() {
-  const { date, view, setDate, setView } = useCalendar()
+  const { date, view } = useCalendar()
   return (
-    <div className="flex flex-row">
+    <div className="h-full">
       <AppCalendar date={date} view={view} />
     </div>
   )

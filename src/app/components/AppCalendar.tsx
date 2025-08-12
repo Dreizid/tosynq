@@ -11,8 +11,10 @@ const localizer = momentLocalizer(moment)
 
 export default function AppCalendar({ date, view }: AppCalendarProps) {
   return (
-    <div className="h-[100vh] w-full">
+    <div className="bg-slate-900 w-full h-full">
       <Calendar
+        className="[&_.rbc-header]:my-2 h-full w-full"
+        style={{ height: "100%" }}
         date={date}
         view={view}
         localizer={localizer}

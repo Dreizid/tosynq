@@ -20,9 +20,9 @@ export default function RootLayout({
     <CalendarProvider>
       <SidebarProvider>
         <AppSidebar />
-        <SidebarInset>
+        <SidebarInset className="flex flex-col">
           <SidebarHeader />
-          <main>
+          <main className="flex-1">
             {children}
           </main>
         </SidebarInset>
