@@ -1,4 +1,5 @@
 'use client'
+import AddTaskButton from "../components/AddTaskButton"
 import AppCalendar from "../components/AppCalendar"
 import { useCalendar } from "../context/calendar-context"
 function page() {
@@ -6,6 +7,7 @@ function page() {
   return (
     <div className="h-full">
       <AppCalendar date={date} view={view} />
+      <AddTaskButton />
     </div>
   )
 }
