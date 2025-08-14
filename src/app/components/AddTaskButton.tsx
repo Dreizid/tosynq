@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
@@ -14,7 +15,7 @@ export default function AddTaskButton() {
             <Plus />
           </DialogTrigger>
         </TooltipTrigger>
-        <TooltipContent className="bg-background text-foreground shadow-lg">
+        <TooltipContent className="bg-background fill-background text-primary shadow-lg">
           <p>Add a task</p>
         </TooltipContent>
       </Tooltip>
@@ -23,18 +24,19 @@ export default function AddTaskButton() {
           <DialogHeader>
             <DialogTitle>Add a task</DialogTitle>
           </DialogHeader>
-          <div>
-            <div>
-              <Label htmlFor="title">Title</Label>
-              <Input id="title" name="title" defaultValue={"Title"} />
+          <div className="grid gap-4">
+            <div className="grid gap-3">
+              <Label htmlFor="title" className="font-semibold">Title</Label>
+              <Input id="title" name="title" placeholder={"Title"} />
             </div>
             <div>
               {/* Add Calendar Date picker here*/}
             </div>
-            <div>
-              <Label htmlFor="description">Description</Label>
+            <div className="grid gap-3">
+              <Label htmlFor="description" className="font-semibold">Description</Label>
               <Textarea placeholder="Description" />
             </div>
+            <Button>Submit</Button>
           </div>
         </DialogContent>
       </form>
