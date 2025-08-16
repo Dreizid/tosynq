@@ -5,6 +5,8 @@ export type SourceType = 'manual' | 'gmail' | 'calendar' | 'teams';
 export interface Task {
   id?: number;
   title: string;
+  from?: Date | undefined;
+  to?: Date | undefined;
   description: string;
   completed: boolean;
   createdAt: Date;
@@ -12,7 +14,7 @@ export interface Task {
 }
 
 export class ToSynqDB extends Dexie {
-  public task!: Table<Task, number>;
+  public task!: Table<Task, 'id'>;
 
   constructor() {
     super('TaskDatabase');
