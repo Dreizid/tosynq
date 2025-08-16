@@ -1,23 +1,42 @@
 "use client"
+
 import * as React from "react"
 import { ChevronDownIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-export function DateTimePicker() {
+interface DateTimePickerProps {
+  date: Date | undefined
+  onSelect: (date: Date | undefined) => void
+}
+export function DateTimePicker({ date, onSelect }: DateTimePickerProps) {
   const [open, setOpen] = React.useState(false)
-  const [date, setDate] = React.useState<Date | undefined>(undefined)
+
+  const setTimeOnDate = (time: string) => {
+    const [hour, minute, second] = time.split(":").map(Number)
+    console.log(hour)
+    console.log(minute)
+    const newDate = new Date(date ? date : "")
+    newDate.setHours(hour)
+    newDate.setMinutes(minute)
+    newDate.setSeconds(second)
+    onSelect(newDate)
+  }
 
   return (
     <div className="flex gap-4">
       <div className="flex flex-col gap-3">
+        <Label htmlFor="date-picker" className="px-1">
+          Date
+        </Label>
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
@@ -35,7 +54,7 @@ export function DateTimePicker() {
               selected={date}
               captionLayout="dropdown"
               onSelect={(date) => {
-                setDate(date)
+                onSelect(date)
                 setOpen(false)
               }}
             />
@@ -43,11 +62,15 @@ export function DateTimePicker() {
         </Popover>
       </div>
       <div className="flex flex-col gap-3">
+        <Label htmlFor="time-picker" className="px-1">
+          Time
+        </Label>
         <Input
           type="time"
           id="time-picker"
           step="1"
           defaultValue="10:30:00"
+          onChange={(e) => setTimeOnDate(e.target.value)}
           className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
         />
       </div>
