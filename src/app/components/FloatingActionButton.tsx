@@ -1,6 +1,6 @@
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { Plus } from "lucide-react"
-function FloatingActionButton({ onClick }: { onClick: () => void }) {
+import { LucideIcon } from "lucide-react"
+function FloatingActionButton({ onClick, icon: Icon }: { onClick: () => void, icon: LucideIcon }) {
   return (
     <Tooltip>
       <TooltipTrigger asChild >
@@ -8,7 +8,7 @@ function FloatingActionButton({ onClick }: { onClick: () => void }) {
           onClick={onClick}
           className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-background shadow-lg hover:scale-120 transition-transform"
         >
-          <Plus />
+          <Icon />
         </button>
       </TooltipTrigger>
       <TooltipContent className="bg-background fill-background text-primary shadow-lg">
