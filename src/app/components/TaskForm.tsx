@@ -23,7 +23,8 @@ function TaskForm() {
         description: description,
         completed: false,
         createdAt: new Date(),
-        source: 'manual'
+        source: 'manual',
+        deleted: false
       })
       console.log(id)
     } catch (error) {
