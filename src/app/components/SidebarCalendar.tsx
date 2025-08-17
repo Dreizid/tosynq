@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DateRange, Modifiers, rangeIncludesDate, DayPickerProps } from "react-day-picker"
 import { endOfWeek, startOfWeek } from "date-fns";
 import { useCalendar } from "../context/calendar-context";
-import { View } from "react-big-calendar";
+import { View } from "@/app/components/AppCalendar";
 
 export default function SidebarCalendar() {
   /* TO DO:
@@ -16,24 +16,18 @@ export default function SidebarCalendar() {
 
   const modifiers = useMemo(() => {
     switch (view) {
-      case "day":
+      case "dayGridDay":
         return {
           selected: date,
         }
-      case "week":
+      case "dayGridWeek":
         const selectedWeek: DateRange = { from: startOfWeek(date), to: endOfWeek(date) }
         return {
           selected: selectedWeek,
           range_start: selectedWeek?.from,
           range_end: selectedWeek?.to,
         };
-      case "month":
-        return {
-        };
-      case "work_week":
-        return {
-        };
-      case "agenda":
+      case "dayGridMonth":
         return {
         };
       default:
@@ -43,20 +37,18 @@ export default function SidebarCalendar() {
   }, [view, date]);
 
   const classNameMap: Record<View, DayPickerProps["classNames"]> = {
-    "month": {
+    "dayGridMonth": {
       selected: "outline-none"
     },
-    "week": {
+    "dayGridWeek": {
       selected: "[&>button]:rounded-[0]",
       range_start: "[&>button]:rounded-e-[0]",
       range_end: "[&>button]:rounded-s-[0]",
     },
-    "work_week": {},
-    "day": {
+    "dayGridDay": {
 
       selected: "outline-none"
     },
-    "agenda": {}
   }
 
   const onViewClick = (
@@ -82,9 +74,9 @@ export default function SidebarCalendar() {
           <SelectValue placeholder="Single" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="day">Single</SelectItem>
-          <SelectItem value="week">Weekly</SelectItem>
-          <SelectItem value="month">Monthly</SelectItem>
+          <SelectItem value="dayGridDay">Date</SelectItem>
+          <SelectItem value="dayGridWeek">Weekly</SelectItem>
+          <SelectItem value="dayGridMonth">Monthly</SelectItem>
         </SelectContent>
       </Select>
     </SidebarGroup >
