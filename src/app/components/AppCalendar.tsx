@@ -31,7 +31,6 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
       deleted: task.deleted
     }
   })), [task])
-  console.log(events)
   const calendarRef = useRef<FullCalendar | null>(null);
 
   useEffect(() => {
@@ -65,7 +64,7 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
   }, []);
 
   return (
-    <div className="m-4 h-full" ref={containerRef}>
+    <div className="h-full" ref={containerRef}>
       <FullCalendar
         ref={calendarRef}
         plugins={[dayGridPlugin]}
@@ -74,6 +73,7 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
         eventClassNames="bg-slate-300 hover:!bg-slate-900"
         eventContent={Event}
         height="100%"
+        headerToolbar={false}
       />
     </div>
   );
