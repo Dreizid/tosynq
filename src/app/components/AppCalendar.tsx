@@ -1,13 +1,13 @@
 "use client"
 import "react-big-calendar/lib/css/react-big-calendar.css"
-import moment from "moment"
 import { useLiveQuery } from "dexie-react-hooks"
 import { db } from "../lib/db/dexie"
 import { useRef, useEffect, useMemo } from "react"
 import FullCalendar from "@fullcalendar/react"
 import { CalendarApi, EventApi } from "@fullcalendar/core"
 import dayGridPlugin from "@fullcalendar/daygrid"
-import { DeleteIcon, Trash2Icon } from "lucide-react"
+import timeGridPlugin from "@fullcalendar/timegrid"
+import { removeTask } from "../lib/db/dbActions"
 
 export type View = "dayGridDay" | "dayGridWeek" | "dayGridMonth"
 
@@ -67,10 +67,11 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
     <div className="h-full" ref={containerRef}>
       <FullCalendar
         ref={calendarRef}
-        plugins={[dayGridPlugin]}
+        plugins={[dayGridPlugin, timeGridPlugin]}
         initialView={view}
         events={events}
         eventClassNames="bg-slate-300 hover:!bg-slate-900"
+        allDaySlot={false}
         eventContent={Event}
         height="100%"
         headerToolbar={false}
