@@ -11,6 +11,7 @@ export interface Task {
   completed: boolean;
   createdAt: Date;
   source: SourceType;
+  deleted: boolean
 }
 
 export class ToSynqDB extends Dexie {

@@ -5,12 +5,11 @@ import AppCalendar from "../components/AppCalendar"
 import { useCalendar } from "../context/calendar-context"
 import { useState } from "react"
 import { Plus } from "lucide-react"
-import { DateTimePicker } from "../components/DateTimePicker"
 function page() {
   const { date, view } = useCalendar()
   const [open, setOpen] = useState(false)
   return (
-    <div className="h-full">
+    <div className="h-full p-4">
       <AppCalendar date={date} view={view} />
       <FloatingActionButton onClick={() => setOpen(true)} icon={Plus} />
       <TaskFormDialog open={open} onOpenChange={() => setOpen(false)} />

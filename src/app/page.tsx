@@ -1,5 +1,3 @@
-import { usePathname } from "next/navigation"
-
 function page() {
   return (
     <div className="flex flex-row">

@@ -1,6 +1,6 @@
 'use client'
 import { createContext, useState, useContext } from "react";
-import { View } from "react-big-calendar";
+import { View } from "@/app/components/AppCalendar";
 
 type CalendarContextType = {
   view: View
@@ -18,7 +18,7 @@ export const useCalendar = () => {
 }
 
 export const CalendarProvider = ({ children }: { children: React.ReactNode }) => {
-  const [view, setView] = useState<View>("day")
+  const [view, setView] = useState<View>("dayGridDay")
   const [date, setDate] = useState<Date>(new Date())
 
 
