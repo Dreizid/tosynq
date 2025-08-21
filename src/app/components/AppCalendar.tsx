@@ -7,7 +7,6 @@ import FullCalendar from "@fullcalendar/react"
 import { CalendarApi, EventApi } from "@fullcalendar/core"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
-import { removeTask } from "../lib/db/dbActions"
 
 export type View = "dayGridDay" | "dayGridWeek" | "dayGridMonth"
 
@@ -20,10 +19,10 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
   const task = useLiveQuery(() => db.task.toArray())
   const events = useMemo(() => task?.map((task) => ({
     title: task.title,
-    allDay: true,
     start: task.from,
     // end: task.to,
     backgroundColor: 'slate-900',
+    allDay: task.allDay,
     extendedProps: {
       dbId: task.id,
       source: task.source,
