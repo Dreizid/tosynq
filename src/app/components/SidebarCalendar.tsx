@@ -65,20 +65,6 @@ export default function SidebarCalendar() {
         modifiers={modifiers}
         onDayClick={(day) => onViewClick(day)}
       />
-      <SidebarSeparator className="my-4" />
-      <Select onValueChange={(value: View) => {
-        setView(value)
-      }}
-        defaultValue={view}>
-        <SelectTrigger>
-          <SelectValue placeholder="Single" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="dayGridDay">Date</SelectItem>
-          <SelectItem value="dayGridWeek">Weekly</SelectItem>
-          <SelectItem value="dayGridMonth">Monthly</SelectItem>
-        </SelectContent>
-      </Select>
     </SidebarGroup >
   )
 }
