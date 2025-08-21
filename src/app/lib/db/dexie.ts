@@ -10,8 +10,9 @@ export interface Task {
   description: string;
   completed: boolean;
   createdAt: Date;
+  allDay: boolean;
   source: SourceType;
-  deleted: boolean
+  deleted: boolean;
 }
 
 export class ToSynqDB extends Dexie {

@@ -19,10 +19,11 @@ export async function addTask({ title, from, to, description, completed, created
       from: from ? from : new Date(),
       to: to ? to : new Date(),
       description: description,
-      completed: false,
+      completed: completed,
       createdAt: new Date(),
       source: 'manual',
-      deleted: false
+      deleted: deleted,
+      allDay: allDay,
     })
   } catch (error) {
     console.log(error)
