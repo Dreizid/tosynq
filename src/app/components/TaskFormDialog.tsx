@@ -1,16 +1,29 @@
 'use client'
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import FormDialog from "./FormDialog";
 import TaskForm from "./TaskForm";
 
 function TaskFormDialog({ open, onOpenChange }: { open: boolean, onOpenChange: () => void }) {
   return (
     <FormDialog
-      title="Add a task"
       open={open}
       onOpenChange={onOpenChange}
-    >
-      <TaskForm />
-    </FormDialog>
+      tabs={[
+        {
+          title: "Task",
+          value: "task",
+          content: <div></div>,
+          contentTitle: "Add a task"
+        },
+        {
+          title: "Event",
+          value: "event",
+          content: <TaskForm />,
+          contentTitle: "Add an event"
+        }
+      ]}
+      defaultTab="event"
+    />
   )
 }
 
