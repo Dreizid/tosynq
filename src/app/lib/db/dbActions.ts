@@ -4,7 +4,7 @@ interface SubmitTaskProps {
   title: string
   from: Date | undefined
   to: Date | undefined
-  description: string
+  description: string | undefined
   completed: boolean
   createdAt: Date
   source: SourceType

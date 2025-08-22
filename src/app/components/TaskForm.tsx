@@ -21,14 +21,19 @@ import {
 
 
 const formSchema = z.object({
-  title: z.string().min(2, {
-    message: "Title must be atleast 2 characters"
-  }).max(50, {
-    message: "Title must not exceed 50 characters"
+  title: z.string()
+    .min(2, { message: "Title must be atleast 2 characters" })
+    .max(50, { message: "Title must not exceed 50 characters" }),
+  from: z.date({
+    error: "Start date is required"
   }),
-  from: z.date(),
-  to: z.date(),
-  description: z.string().min(0).max(200),
+  to: z.date({
+    error: "End date is required"
+  }),
+  description: z.string().max(200).optional(),
+}).refine((data) => !data.from || !data.to || data.to > data.from, {
+  message: "End date must be after start date",
+  path: ["to"]
 })
 
 function TaskForm() {

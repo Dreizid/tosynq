@@ -7,7 +7,7 @@ export interface Task {
   title: string;
   from?: Date | undefined;
   to?: Date | undefined;
-  description: string;
+  description: string | undefined;
   completed: boolean;
   createdAt: Date;
   allDay: boolean;
