@@ -74,6 +74,7 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
         eventContent={Event}
         height="100%"
         headerToolbar={false}
+        eventClick={(event) => console.log(event.event.start)}
       />
     </div>
   );
