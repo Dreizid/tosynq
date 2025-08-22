@@ -1,4 +1,5 @@
 "use client"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -6,25 +7,50 @@ import { Button } from "@/components/ui/button";
 import { DateTimePicker } from "@/app/components/DateTimePicker";
 import { db } from "@/app/lib/db/dexie";
 import { useState } from "react";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+
+
+const formSchema = z.object({
+  title: z.string().min(2, {
+    message: "Title must be atleast 2 characters"
+  }).max(50, {
+    message: "Title must not exceed 50 characters"
+  }),
+  from: z.date(),
+  to: z.date(),
+  description: z.string().min(0).max(200),
+})
 
 function TaskForm() {
-  const [title, setTitle] = useState<string>("")
-  const [description, setDescription] = useState("")
-  const [from, setFrom] = useState<Date | undefined>(undefined)
-  const [to, setTo] = useState<Date | undefined>(undefined)
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+    }
+  })
 
-  async function submitTask() {
-    console.log("adding")
+  async function submitTask(values: z.infer<typeof formSchema>) {
     try {
       const id = await db.task.add({
-        title: title,
-        from: from ? from : new Date(),
-        to: to ? to : new Date(),
-        description: description,
+        title: values.title,
+        from: values.from,
+        to: values.to,
+        description: values.description,
         completed: false,
         createdAt: new Date(),
         source: 'manual',
-        deleted: false
+        deleted: false,
+        allDay: true
       })
       console.log(id)
     } catch (error) {
@@ -32,38 +58,59 @@ function TaskForm() {
     }
   }
   return (
-    <form onSubmit={(e) => {
-      e.preventDefault()
-      submitTask()
-    }}>
-      <div className="grid gap-4">
-        <div className="grid gap-3">
-          <Label htmlFor="title" className="font-semibold">Title</Label>
-          <Input
-            id="title"
-            name="title"
-            placeholder={"Title"}
-            autoFocus={false}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-        <div className="grid gap-3">
-          <Label htmlFor="description" className="font-semibold">Description</Label>
-          <Textarea placeholder="Description" onChange={(e) => setDescription(e.target.value)} />
-        </div>
-        <div className="grid gap-2">
-          <Label>
-            From:
-          </Label>
-          <DateTimePicker date={from} onSelect={setFrom} />
-          <Label>
-            To:
-          </Label>
-          <DateTimePicker date={to} onSelect={setTo} />
-        </div>
-        <Button type="button" onClick={submitTask}>Submit</Button>
-      </div>
-    </form>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(submitTask)}>
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Title</FormLabel>
+              <FormControl>
+                <Input placeholder="Title" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea placeholder="Description" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="from"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>From</FormLabel>
+              <FormControl>
+                <DateTimePicker date={field.value} onSelect={field.onChange} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="to"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>To</FormLabel>
+              <FormControl>
+                <DateTimePicker date={field.value} onSelect={field.onChange} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <Button type="submit">Submit</Button>
+      </form>
+    </Form>
   )
 }
 
