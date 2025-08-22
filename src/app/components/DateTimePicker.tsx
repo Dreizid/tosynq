@@ -1,8 +1,6 @@
 "use client"
-
 import * as React from "react"
 import { ChevronDownIcon } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
@@ -22,9 +20,8 @@ export function DateTimePicker({ date, onSelect }: DateTimePickerProps) {
 
   const setTimeOnDate = (time: string) => {
     const [hour, minute, second] = time.split(":").map(Number)
-    console.log(hour)
-    console.log(minute)
-    const newDate = new Date(date ? date : "")
+    console.log(time)
+    const newDate = date ? new Date(date) : new Date()
     newDate.setHours(hour)
     newDate.setMinutes(minute)
     newDate.setSeconds(second)
