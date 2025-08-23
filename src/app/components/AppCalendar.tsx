@@ -20,7 +20,7 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
   const events = useMemo(() => task?.map((task) => ({
     title: task.title,
     start: task.from,
-    // end: task.to,
+    end: task.to,
     backgroundColor: 'slate-900',
     allDay: task.allDay,
     extendedProps: {
