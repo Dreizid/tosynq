@@ -16,7 +16,7 @@ export interface Task {
 }
 
 export class ToSynqDB extends Dexie {
-  public task!: Table<Task, 'id'>;
+  public task!: Table<Task, Number>;
 
   constructor() {
     super('TaskDatabase');
