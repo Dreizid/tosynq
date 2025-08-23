@@ -25,6 +25,7 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
     allDay: task.allDay,
     extendedProps: {
       dbId: task.id,
+      type: task.type,
       source: task.source,
       description: task.description,
       deleted: task.deleted

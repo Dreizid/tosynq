@@ -1,10 +1,11 @@
-import { db, SourceType } from "@/app/lib/db/dexie"
+import { db, SourceType, TaskType } from "@/app/lib/db/dexie"
 
 interface SubmitTaskProps {
   title: string
   from: Date | undefined
   to: Date | undefined
   description: string | undefined
+  type: TaskType
   completed: boolean
   createdAt: Date
   source: SourceType
@@ -12,13 +13,14 @@ interface SubmitTaskProps {
   allDay: boolean
 }
 
-export async function addTask({ title, from, to, description, completed, createdAt, source, deleted, allDay }: SubmitTaskProps) {
+export async function addTask({ title, from, to, description, type, completed, createdAt, source, deleted, allDay }: SubmitTaskProps) {
   try {
     await db.task.add({
       title: title,
       from: from ? from : new Date(),
       to: to ? to : new Date(),
       description: description,
+      type: type,
       completed: completed,
       createdAt: new Date(),
       source: 'manual',

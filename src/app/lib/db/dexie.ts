@@ -1,6 +1,7 @@
 import Dexie, { Table } from 'dexie';
 
 export type SourceType = 'manual' | 'gmail' | 'calendar' | 'teams';
+export type TaskType = 'task' | 'event';
 
 export interface Task {
   id?: number;
@@ -8,6 +9,7 @@ export interface Task {
   from?: Date | undefined;
   to?: Date | undefined;
   description: string | undefined;
+  type: TaskType;
   completed: boolean;
   createdAt: Date;
   allDay: boolean;

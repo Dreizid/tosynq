@@ -47,6 +47,7 @@ function EventForm({ className }: { className?: string }) {
         from: values.from,
         to: values.to,
         description: values.description,
+        type: 'event',
         completed: false,
         createdAt: new Date(),
         source: 'manual',
