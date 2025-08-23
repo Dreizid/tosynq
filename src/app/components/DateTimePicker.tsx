@@ -21,7 +21,13 @@ export function DateTimePicker({ date, onSelect }: DateTimePickerProps) {
   const setTimeOnDate = (time: string) => {
     const [hour, minute, second] = time.split(":").map(Number)
     console.log(time)
-    const newDate = date ? new Date(date) : new Date()
+    let newDate: Date
+    if (!date) {
+      newDate = new Date()
+      newDate.setHours(10, 30)
+    } else {
+      newDate = new Date(date)
+    }
     newDate.setHours(hour)
     newDate.setMinutes(minute)
     newDate.setSeconds(second)
