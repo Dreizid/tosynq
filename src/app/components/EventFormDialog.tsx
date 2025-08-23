@@ -1,7 +1,6 @@
 'use client'
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import FormDialog from "./FormDialog";
-import TaskForm from "./EventForm";
+import EventForm from "./EventForm";
 
 function TaskFormDialog({ open, onOpenChange }: { open: boolean, onOpenChange: () => void }) {
   return (
@@ -18,7 +17,7 @@ function TaskFormDialog({ open, onOpenChange }: { open: boolean, onOpenChange: (
         {
           title: "Event",
           value: "event",
-          content: <TaskForm />,
+          content: <EventForm />,
           contentTitle: "Add an event"
         }
       ]}

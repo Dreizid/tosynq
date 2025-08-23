@@ -1,6 +1,6 @@
 'use client'
 import FloatingActionButton from "@/app/components/FloatingActionButton"
-import TaskFormDialog from "@/app/components/TaskFormDialog"
+import TaskFormDialog from "@/app/components/EventFormDialog"
 import AppCalendar from "../components/AppCalendar"
 import { useCalendar } from "../context/calendar-context"
 import { useState } from "react"
