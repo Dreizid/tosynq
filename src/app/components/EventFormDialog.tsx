@@ -2,7 +2,7 @@
 import FormDialog from "./FormDialog";
 import EventForm from "./EventForm";
 
-function TaskFormDialog({ open, onOpenChange }: { open: boolean, onOpenChange: () => void }) {
+function EventFormDialog({ open, onOpenChange }: { open: boolean, onOpenChange: () => void }) {
   return (
     <FormDialog
       open={open}
@@ -26,4 +26,4 @@ function TaskFormDialog({ open, onOpenChange }: { open: boolean, onOpenChange: (
   )
 }
 
-export default TaskFormDialog;
+export default EventFormDialog;
