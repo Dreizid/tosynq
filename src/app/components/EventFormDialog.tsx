@@ -1,5 +1,6 @@
 'use client'
 import FormDialog from "./FormDialog";
+import TaskForm from "@/app/components/TaskForm"
 import EventForm from "./EventForm";
 
 function EventFormDialog({ open, onOpenChange }: { open: boolean, onOpenChange: () => void }) {
@@ -11,7 +12,7 @@ function EventFormDialog({ open, onOpenChange }: { open: boolean, onOpenChange: 
         {
           title: "Task",
           value: "task",
-          content: <div></div>,
+          content: <TaskForm />,
           contentTitle: "Add a task"
         },
         {
