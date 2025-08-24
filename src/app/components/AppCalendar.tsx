@@ -16,7 +16,6 @@ interface AppCalendarProps {
 }
 
 export default function AppCalendar({ date, view }: AppCalendarProps) {
-  const [list, setList] = useState()
   const taskList = useLiveQuery(() => db.task.toArray())
   const task = useMemo(() => taskList?.filter(task => task.type === "task").map((task) => ({
     title: task.title,
@@ -82,7 +81,7 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
   }, []);
 
   return (
-    <div className="h-full" ref={containerRef}>
+    <div className="h-full calendar-wrapper" ref={containerRef}>
       <FullCalendar
         ref={calendarRef}
         plugins={[dayGridPlugin, timeGridPlugin]}
@@ -93,6 +92,20 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
         eventContent={Event}
         height="100%"
         headerToolbar={false}
+        views={{
+          dayGridWeek: {
+            dayHeaderContent: (arg) => {
+              return {
+                html: `
+									<div class="fc-custom-header">
+										<div style="font-weight: normal">${arg.date.toLocaleDateString('en-US', { weekday: 'short' })}</div>
+										<div class="date">${arg.date.getDate()}</div>
+									</div>
+								`
+              }
+            }
+          }
+        }}
         eventClick={(event) => console.log(event.event.start)}
       />
     </div>

@@ -119,3 +119,43 @@
   }
 }
 
+.calendar-wrapper {
+	.fc {
+		@apply rounded-2xl shadow-lg
+	}
+	.fc-scrollgrid {
+		@apply rounded-2xl
+	}
+
+	.fc-scrollgrid td:last-of-type {
+		@apply rounded-b-2xl
+	}
+
+	th[role='presentation'] {
+		@apply rounded-tr-2xl 
+	}
+
+	.fc-col-header {
+		@apply outline-none border-[0] outline-[0]
+	}
+
+	.fc-col-header-cell {
+		@apply border-x-0 py-2
+	}
+
+	.fc-daygrid-day-number {
+		@apply mr-auto pl-2
+	}
+
+	.fc-daygrid-day.fc-day-today {
+		@apply !bg-slate-100
+	}
+
+	.fc-col-header-cell.fc-day-today .date,
+	.fc-day-today .fc-daygrid-day-number {
+		@apply bg-blue-200 rounded-4xl h-7 w-7 flex items-center justify-center;
+	}
+}
+
+
+
