@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { useCalendar } from "../context/calendar-context";
 import ViewSelector from "./ViewSelector";
+import ListSelector from "./ListSelector";
 
 export default function SidebarHeader({ }) {
   const { date } = useCalendar()
@@ -27,7 +28,11 @@ export default function SidebarHeader({ }) {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <ViewSelector />
+      <div className="flex h-full items-center ml-auto">
+        <ListSelector />
+        <Separator orientation="vertical" className="mx-2" />
+        <ViewSelector />
+      </div>
     </header>
   )
 }
