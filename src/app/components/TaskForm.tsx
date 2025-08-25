@@ -48,7 +48,7 @@ function TaskForm({ className }: { className?: string }) {
       createdAt: new Date(),
       source: "manual",
       deleted: false,
-      allDay: true
+      allDay: values.from ? false : true
     })
   }
 
