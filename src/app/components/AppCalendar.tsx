@@ -7,6 +7,7 @@ import FullCalendar from "@fullcalendar/react"
 import { CalendarApi, EventApi } from "@fullcalendar/core"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
+import EventComponent from "@/app/components/EventComponent"
 
 export type View = "dayGridDay" | "dayGridWeek" | "dayGridMonth"
 
@@ -21,14 +22,16 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
     title: task.title,
     start: task.from,
     end: task.to,
-    backgroundcolor: 'slate-900',
     allDay: task.allDay,
+    backgroundColor: "#c6d2ff",
+    textColor: "black",
     extendedProps: {
       dbid: task.id,
       type: task.type,
       source: task.source,
       description: task.description,
-      deleted: task.deleted
+      deleted: task.deleted,
+      className: "p-1"
     }
   })), [taskList])
 
@@ -36,7 +39,6 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
     title: task.title,
     start: task.from,
     end: task.to,
-    backgroundColor: 'slate-900',
     allDay: task.allDay,
     extendedProps: {
       dbid: task.id,
@@ -83,13 +85,15 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
   return (
     <div className="h-full calendar-wrapper" ref={containerRef}>
       <FullCalendar
+        eventColor="transparent"
+        eventClassNames={() => "m-1"}
+        eventDisplay="block"
         ref={calendarRef}
         plugins={[dayGridPlugin, timeGridPlugin]}
         initialView={view}
-        events={[...(task || []), ...(events || [])]}
-        eventClassNames="bg-slate-300 hover:!bg-slate-900"
+        events={[...(task || [])]} // , ...(events || [])]}
+        eventContent={(arg) => <EventComponent event={arg.event} />}
         allDaySlot={false}
-        eventContent={Event}
         height="100%"
         headerToolbar={false}
         views={{
@@ -111,14 +115,4 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
     </div>
   );
 };
-
-function Event({ timeText, event }: { timeText: string, event: EventApi }) {
-  return (
-    <div className="">
-      <h1 className="">
-        {event.title} - {timeText}
-      </h1>
-    </div>
-  )
-}
 
