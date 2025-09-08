@@ -1,6 +1,4 @@
 "use client"
-import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbPage } from "@/components/ui/breadcrumb";
 import { useCalendar } from "../context/calendar-context";
 import ViewSelector from "./ViewSelector";
