@@ -2,6 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useCalendar } from "../context/calendar-context";
+import { View } from "./AppCalendar";
 
 function ListSelector() {
   const { enabled, toggleSource } = useCalendar()
@@ -15,10 +16,14 @@ function ListSelector() {
         <Checkbox id="task" checked={enabled.includes("task")} onCheckedChange={() => toggleSource("task")} />
         <Label htmlFor="task" >Task</Label>
       </div>
-      <div className="flex items-center gap-1">
-        <Switch id="time-view" onCheckedChange={(v) => console.log(v)} />
-        <Label htmlFor="time-view">Time view</Label>
-      </div>
+      {
+        // <div className="flex items-center gap-1">
+        //   <Switch id="time-view" onCheckedChange={(v) => {
+        //     setView(v ? view.replace("day", "time") as View : view.replace("time", "day") as View )
+        //   }} />
+        //   <Label htmlFor="time-view">Time view</Label>
+        // </div>
+      }
     </div>
   )
 }
