@@ -1,4 +1,5 @@
-import { Home, Inbox, Search, Settings } from "lucide-react"
+"use client"
+import { Home, Inbox, Search, SeparatorHorizontal, Settings } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
@@ -16,6 +17,8 @@ import { Calendar } from "@/components/ui/calendar"
 import Link from "next/link"
 import AppCalendar from "./AppCalendar"
 import SidebarCalendar from "./SidebarCalendar"
+import { Separator } from "@/components/ui/separator"
+import ListSelector from "./ListSelector"
 
 const items = [
   {
@@ -50,8 +53,10 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarCalendar />
+            <ListSelector />
           </SidebarGroupContent>
         </SidebarGroup>
+        <Separator orientation="horizontal" />
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>

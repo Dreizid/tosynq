@@ -8,6 +8,7 @@ import { CalendarApi, EventApi } from "@fullcalendar/core"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
 import EventComponent from "@/app/components/EventComponent"
+import { useCalendar } from "../context/calendar-context"
 
 export type View = "dayGridDay" | "dayGridWeek" | "dayGridMonth"
 
@@ -17,8 +18,9 @@ interface AppCalendarProps {
 }
 
 export default function AppCalendar({ date, view }: AppCalendarProps) {
+  const { enabled } = useCalendar()
   const taskList = useLiveQuery(() => db.task.toArray())
-  const task = useMemo(() => taskList?.filter(task => task.type === "task").map((task) => ({
+  const task = useMemo(() => (taskList ?? []).filter(task => task.type === "task").map((task) => ({
     title: task.title,
     start: task.from,
     end: task.to,
@@ -35,11 +37,13 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
     }
   })), [taskList])
 
-  const events = useMemo(() => taskList?.filter(task => task.type === "event").map((task) => ({
+  const events = useMemo(() => (taskList ?? []).filter(task => task.type === "event").map((task) => ({
     title: task.title,
     start: task.from,
     end: task.to,
     allDay: task.allDay,
+    backgroundColor: "#D7C6FF",
+    textColor: "black",
     extendedProps: {
       dbid: task.id,
       type: task.type,
@@ -49,6 +53,10 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
     }
   })), [taskList])
 
+  const finalTaskList = [
+    ...(enabled.includes("events") ? events : []),
+    ...(enabled.includes("task") ? task : [])
+  ]
 
   const calendarRef = useRef<FullCalendar | null>(null);
 
@@ -91,7 +99,7 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
         ref={calendarRef}
         plugins={[dayGridPlugin, timeGridPlugin]}
         initialView={view}
-        events={[...(task || [])]} // , ...(events || [])]}
+        events={finalTaskList}
         eventContent={(arg) => <EventComponent event={arg.event} />}
         allDaySlot={false}
         height="100%"

@@ -20,7 +20,6 @@ export default function SidebarHeader({ }) {
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex h-full items-center ml-auto">
-        <ListSelector />
         <ViewSelector />
       </div>
     </header>
