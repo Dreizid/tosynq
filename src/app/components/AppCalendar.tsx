@@ -10,14 +10,14 @@ import timeGridPlugin from "@fullcalendar/timegrid"
 import EventComponent from "@/app/components/EventComponent"
 import { useCalendar } from "../context/calendar-context"
 
-export type View = "dayGridDay" | "dayGridWeek" | "dayGridMonth"
+export type View = "dayGridDay" | "dayGridWeek" | "dayGridMonth" | "timeGridDay" | "timeGridWeek"
 
 interface AppCalendarProps {
   date: Date
-  view: View
+  range: View
 }
 
-export default function AppCalendar({ date, view }: AppCalendarProps) {
+export default function AppCalendar({ date, range }: AppCalendarProps) {
   const { enabled } = useCalendar()
   const taskList = useLiveQuery(() => db.task.toArray())
   const task = useMemo(() => (taskList ?? []).filter(task => task.type === "task").map((task) => ({
@@ -65,10 +65,10 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
     if (calendarApi) {
       setTimeout(() => {
         calendarApi.gotoDate(date);
-        calendarApi.changeView(view);
+        calendarApi.changeView(range);
       }, 0)
     }
-  }, [date, view]);
+  }, [date, range]);
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -98,10 +98,9 @@ export default function AppCalendar({ date, view }: AppCalendarProps) {
         eventDisplay="block"
         ref={calendarRef}
         plugins={[dayGridPlugin, timeGridPlugin]}
-        initialView={view}
         events={finalTaskList}
         eventContent={(arg) => <EventComponent event={arg.event} />}
-        allDaySlot={false}
+        allDaySlot={true}
         height="100%"
         headerToolbar={false}
         views={{

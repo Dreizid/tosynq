@@ -3,10 +3,10 @@ import { createContext, useState, useContext } from "react";
 import { View } from "@/app/components/AppCalendar";
 
 type CalendarContextType = {
-  view: View
+  range: View
   date: Date
   enabled: Source[]
-  setView: (view: View) => void
+  setRange: (view: View) => void
   setDate: (date: Date) => void
   toggleSource: (src: Source) => void
 }
@@ -21,7 +21,7 @@ export const useCalendar = () => {
 }
 
 export const CalendarProvider = ({ children }: { children: React.ReactNode }) => {
-  const [view, setView] = useState<View>("dayGridDay")
+  const [range, setRange] = useState<View>("dayGridDay")
   const [date, setDate] = useState<Date>(new Date())
   const [enabled, setEnabled] = useState<Source[]>(["events", "task"])
 
@@ -31,7 +31,7 @@ export const CalendarProvider = ({ children }: { children: React.ReactNode }) =>
     )
   }
   return (
-    <CalendarContext.Provider value={{ view, date, enabled, setView, setDate, toggleSource }}>
+    <CalendarContext.Provider value={{ range, date, enabled, setRange, setDate, toggleSource }}>
       {children}
     </CalendarContext.Provider>
   )
