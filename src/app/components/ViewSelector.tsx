@@ -3,9 +3,9 @@ import { useCalendar } from "@/app/context/calendar-context";
 import { View } from "./AppCalendar";
 
 function ViewSelector() {
-  const { view, setView } = useCalendar()
+  const { range, setRange } = useCalendar()
   return (
-    <ToggleGroup type="single" variant="outline" className="bg-background" value={view} onValueChange={(value: View) => setView(value)}>
+    <ToggleGroup type="single" variant="outline" className="bg-background" value={range} onValueChange={(value: View) => setRange(value)}>
       <ToggleGroupItem value="dayGridDay">Daily</ToggleGroupItem>
       <ToggleGroupItem value="dayGridWeek">Weekly</ToggleGroupItem>
       <ToggleGroupItem value="dayGridMonth">Monthly</ToggleGroupItem>
