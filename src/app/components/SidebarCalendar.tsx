@@ -12,10 +12,10 @@ export default function SidebarCalendar() {
   /* TO DO:
   Add accent colors for current day in calendar 
   */
-  const { date, view, setDate, setView } = useCalendar()
+  const { date, range, setDate, setRange } = useCalendar()
 
   const modifiers = useMemo(() => {
-    switch (view) {
+    switch (range) {
       case "dayGridDay":
         return {
           selected: date,
@@ -34,7 +34,7 @@ export default function SidebarCalendar() {
         return {
         };
     }
-  }, [view, date]);
+  }, [range, date]);
 
   const classNameMap: Record<View, DayPickerProps["classNames"]> = {
     "dayGridMonth": {
@@ -46,9 +46,10 @@ export default function SidebarCalendar() {
       range_end: "[&>button]:rounded-s-[0]",
     },
     "dayGridDay": {
-
       selected: "outline-none"
     },
+    "timeGridDay": {},
+    "timeGridWeek": {}
   }
 
   const onViewClick = (
@@ -61,7 +62,7 @@ export default function SidebarCalendar() {
     <SidebarGroup >
       <Calendar
         className="[&_[role=gridcell].bg-accent]:bg-background [&_[role=gridcell].bg-accent]:text-secondary-foreground [&_[role=gridcell].bg-accent]:w-full block p-0 bg-sidebar-background [&_[role=gridcell]>button]:outline-none [&_[role=gridcell]>button]:ring-0"
-        classNames={classNameMap[view]}
+        classNames={classNameMap[range]}
         modifiers={modifiers}
         onDayClick={(day) => onViewClick(day)}
       />
