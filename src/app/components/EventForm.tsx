@@ -13,8 +13,19 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form"
-import { addTask } from "../lib/db/dbActions";
+import { addTask, updateTask } from "../lib/db/dbActions";
 
+interface DefaultFormValues {
+  title?: string
+  description?: string
+  from?: Date
+  to?: Date
+}
+
+interface EventFormDefaultValues extends DefaultFormValues {
+  className?: string
+  eventId?: number
+}
 
 const formSchema = z.object({
   title: z.string()
@@ -32,17 +43,32 @@ const formSchema = z.object({
   path: ["to"]
 })
 
-function EventForm({ className }: { className?: string }) {
+function EventForm({ title, description, from, to, eventId, className }: EventFormDefaultValues) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
+      title: title ?? "",
+      description: description ?? "",
+      from: from ?? undefined,
+      to: to ?? undefined,
     }
   })
 
   async function submitTask(values: z.infer<typeof formSchema>) {
     try {
-      addTask({
+      eventId ? updateTask({
+        id: eventId,
+        title: values.title,
+        from: values.from,
+        to: values.to,
+        description: values.description,
+        type: 'event',
+        completed: false,
+        createdAt: new Date(),
+        source: 'manual',
+        deleted: false,
+        allDay: false
+      }) : addTask({
         title: values.title,
         from: values.from,
         to: values.to,
@@ -111,7 +137,7 @@ function EventForm({ className }: { className?: string }) {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button type="submit">{eventId ? "Update" : "Submit"}</Button>
         </form>
       </Form>
     </div>

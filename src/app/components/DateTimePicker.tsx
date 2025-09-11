@@ -33,6 +33,12 @@ export function DateTimePicker({ date, onSelect }: DateTimePickerProps) {
     newDate.setSeconds(second)
     onSelect(newDate)
   }
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  })
+  console.log(formatter.format(date))
 
   return (
     <div className="flex gap-4">
@@ -72,7 +78,7 @@ export function DateTimePicker({ date, onSelect }: DateTimePickerProps) {
           type="time"
           id="time-picker"
           step="1"
-          defaultValue="10:30:00"
+          defaultValue={formatter.format(date)}
           onChange={(e) => setTimeOnDate(e.target.value)}
           className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
         />

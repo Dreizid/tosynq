@@ -9,6 +9,11 @@ import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
 import EventComponent from "@/app/components/EventComponent"
 import { useCalendar } from "../context/calendar-context"
+import FormDialog from "./FormDialog"
+import EventFormDialog from "./EventFormDialog"
+import EventForm from "./EventForm"
+import { TaskType, SourceType } from "@/app/lib/db/dexie"
+import { EventImpl } from "@fullcalendar/core/internal"
 
 export type View = "dayGridDay" | "dayGridWeek" | "dayGridMonth" | "timeGridDay" | "timeGridWeek"
 
@@ -17,8 +22,17 @@ interface AppCalendarProps {
   range: View
 }
 
+export type EventExtendedProps = {
+  dbid: number
+  type: TaskType
+  source: SourceType
+  description: string
+  deleted: boolean
+}
+
 export default function AppCalendar({ date, range }: AppCalendarProps) {
   const { enabled } = useCalendar()
+  const [editModal, setEditModal] = useState(false);
   const taskList = useLiveQuery(() => db.task.toArray())
   const task = useMemo(() => (taskList ?? []).filter(task => task.type === "task").map((task) => ({
     title: task.title,
@@ -28,12 +42,11 @@ export default function AppCalendar({ date, range }: AppCalendarProps) {
     backgroundColor: "#c6d2ff",
     textColor: "black",
     extendedProps: {
-      dbid: task.id,
+      dbId: task.id,
       type: task.type,
       source: task.source,
       description: task.description,
       deleted: task.deleted,
-      className: "p-1"
     }
   })), [taskList])
 
@@ -45,7 +58,7 @@ export default function AppCalendar({ date, range }: AppCalendarProps) {
     backgroundColor: "#D7C6FF",
     textColor: "black",
     extendedProps: {
-      dbid: task.id,
+      dbId: task.id,
       type: task.type,
       source: task.source,
       description: task.description,
@@ -94,7 +107,6 @@ export default function AppCalendar({ date, range }: AppCalendarProps) {
     <div className="h-full calendar-wrapper" ref={containerRef}>
       <FullCalendar
         eventColor="transparent"
-        eventClassNames={() => "m-1"}
         eventDisplay="block"
         ref={calendarRef}
         plugins={[dayGridPlugin, timeGridPlugin]}
@@ -117,7 +129,6 @@ export default function AppCalendar({ date, range }: AppCalendarProps) {
             }
           }
         }}
-        eventClick={(event) => console.log(event.event.start)}
       />
     </div>
   );
