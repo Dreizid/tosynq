@@ -13,7 +13,7 @@ import { removeTask } from "../lib/db/dbActions";
 
 function EventComponent({ event }: { event: EventApi }) {
   const [finished, setFinished] = useState<boolean>(false)
-  const [open, setOpen] = useState<boolean>(true)
+  const [open, setOpen] = useState<boolean>(false)
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
