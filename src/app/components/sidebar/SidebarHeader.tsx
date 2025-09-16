@@ -1,8 +1,8 @@
 "use client"
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbPage } from "@/components/ui/breadcrumb";
-import { useCalendar } from "../context/calendar-context";
+import { useCalendar } from "../../context/calendar-context";
 import ViewSelector from "./ViewSelector";
-import ListSelector from "./ListSelector";
+import ListSelector from "../ListSelectorSelector";
 
 export default function SidebarHeader({ }) {
   const { date } = useCalendar()

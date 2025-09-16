@@ -5,8 +5,8 @@ import { SidebarGroup, SidebarSeparator } from "@/components/ui/sidebar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DateRange, Modifiers, rangeIncludesDate, DayPickerProps } from "react-day-picker"
 import { endOfWeek, startOfWeek } from "date-fns";
-import { useCalendar } from "../context/calendar-context";
-import { View } from "@/app/components/AppCalendar";
+import { useCalendar } from "../../context/calendar-context";
+import { View } from "@/app/components/calendar/AppCalendar";
 
 export default function SidebarCalendar() {
   /* TO DO:

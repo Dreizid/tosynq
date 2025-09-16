@@ -1,6 +1,6 @@
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
-import { AppSidebar } from "@/app/components/AppSidebar";
+import { AppSidebar } from "@/app/components/sidebar/AppSidebar";
 import { CalendarProvider } from "@/app/context/calendar-context";
 import {
   Breadcrumb,
@@ -9,7 +9,7 @@ import {
   BreadcrumbPage,
 
 } from "@/components/ui/breadcrumb"
-import SidebarHeader from "../components/SidebarHeader";
+import SidebarHeader from "../components/sidebar/SidebarHeader";
 
 export default function RootLayout({
   children,

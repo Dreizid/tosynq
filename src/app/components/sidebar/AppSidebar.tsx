@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sidebar"
 import { Calendar } from "@/components/ui/calendar"
 import Link from "next/link"
-import AppCalendar from "./AppCalendar"
+import AppCalendar from "../calendar/AppCalendar"
 import SidebarCalendar from "./SidebarCalendar"
 import { Separator } from "@/components/ui/separator"
 import ListSelector from "./ListSelector"

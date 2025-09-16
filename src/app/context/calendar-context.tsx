@@ -1,6 +1,6 @@
 'use client'
 import { createContext, useState, useContext } from "react";
-import { View } from "@/app/components/AppCalendar";
+import { View } from "@/app/components/calendar/AppCalendar";
 
 type CalendarContextType = {
   range: View

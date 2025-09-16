@@ -1,6 +1,6 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useCalendar } from "@/app/context/calendar-context";
-import { View } from "./AppCalendar";
+import { View } from "../calendar/AppCalendar";
 
 function ViewSelector() {
   const { range, setRange } = useCalendar()
