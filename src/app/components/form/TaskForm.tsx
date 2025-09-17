@@ -72,7 +72,7 @@ function TaskForm({ className }: { className?: string }) {
               <FormItem>
                 <FormLabel className="font-semibold">Title</FormLabel>
                 <FormControl>
-                  <Input placeholder="Tiltle" {...field} />
+                  <Input placeholder="Title" {...field} />
                 </FormControl>
               </FormItem>
             )}
