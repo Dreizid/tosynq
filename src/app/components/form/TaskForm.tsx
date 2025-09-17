@@ -1,41 +1,48 @@
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { addTask } from "../lib/db/dbActions"
-import { Button } from "@/components/ui/button"
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { addTask } from "../../lib/db/dbActions";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { DateTimePicker } from "./DateTimePicker"
-import { Checkbox } from "@/components/ui/checkbox"
-import { useState } from "react"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { DateTimePicker } from "./DateTimePicker";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useState } from "react";
 
-const taskFormSchema = z.object({
-  title: z.string()
-    .min(2, { message: "Title must be atleast 2 characters" })
-    .max(50, { message: "Title must not exceed 50 characters" }),
-  from: z.date({
-    error: "Start date is required"
-  }).optional(),
-  to: z.date({
-    error: "End date is required"
-  }).optional(),
-  description: z.string().max(200).optional(),
-}).refine((data) => !data.from || !data.to || data.to > data.from, {
-  message: "End date must be after start date",
-  path: ["to"]
-})
+const taskFormSchema = z
+  .object({
+    title: z
+      .string()
+      .min(2, { message: "Title must be atleast 2 characters" })
+      .max(50, { message: "Title must not exceed 50 characters" }),
+    from: z
+      .date({
+        error: "Start date is required",
+      })
+      .optional(),
+    to: z
+      .date({
+        error: "End date is required",
+      })
+      .optional(),
+    description: z.string().max(200).optional(),
+  })
+  .refine((data) => !data.from || !data.to || data.to > data.from, {
+    message: "End date must be after start date",
+    path: ["to"],
+  });
 
 function TaskForm({ className }: { className?: string }) {
   const form = useForm<z.infer<typeof taskFormSchema>>({
-    resolver: zodResolver(taskFormSchema)
-  })
+    resolver: zodResolver(taskFormSchema),
+  });
 
   async function onSubmit(values: z.infer<typeof taskFormSchema>) {
     addTask({
@@ -48,12 +55,12 @@ function TaskForm({ className }: { className?: string }) {
       createdAt: new Date(),
       source: "manual",
       deleted: false,
-      allDay: values.from ? false : true
-    })
+      allDay: values.from ? false : true,
+    });
   }
 
-  const [fromChecked, setFromChecked] = useState<boolean>(false)
-  const [toChecked, setToChecked] = useState<boolean>(false)
+  const [fromChecked, setFromChecked] = useState<boolean>(false);
+  const [toChecked, setToChecked] = useState<boolean>(false);
   return (
     <div className={`${className} mt-4`}>
       <Form {...form}>
@@ -74,7 +81,7 @@ function TaskForm({ className }: { className?: string }) {
             control={form.control}
             name="description"
             render={({ field }) => (
-              <FormItem >
+              <FormItem>
                 <FormLabel className="font-semibold">Description</FormLabel>
                 <FormControl>
                   <Textarea placeholder="Description" {...field} />
@@ -97,7 +104,13 @@ function TaskForm({ className }: { className?: string }) {
                 </div>
                 {fromChecked && (
                   <FormControl>
-                    <DateTimePicker date={field.value} onSelect={(newDate) => { field.onChange(newDate); console.log(newDate) }} />
+                    <DateTimePicker
+                      date={field.value}
+                      onSelect={(newDate) => {
+                        field.onChange(newDate);
+                        console.log(newDate);
+                      }}
+                    />
                   </FormControl>
                 )}
               </FormItem>
@@ -118,10 +131,12 @@ function TaskForm({ className }: { className?: string }) {
                 </div>
                 {toChecked && (
                   <FormControl>
-                    <DateTimePicker date={field.value} onSelect={(newDate) => field.onChange(newDate)} />
+                    <DateTimePicker
+                      date={field.value}
+                      onSelect={(newDate) => field.onChange(newDate)}
+                    />
                   </FormControl>
-                )
-                }
+                )}
               </FormItem>
             )}
           />
@@ -129,7 +144,7 @@ function TaskForm({ className }: { className?: string }) {
         </form>
       </Form>
     </div>
-  )
+  );
 }
 
 export default TaskForm;

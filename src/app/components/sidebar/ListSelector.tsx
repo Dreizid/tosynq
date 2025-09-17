@@ -1,8 +1,8 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useCalendar } from "../context/calendar-context";
-import { View } from "./AppCalendar";
+import { useCalendar } from "../../context/calendar-context";
+import { View } from "../calendar/AppCalendar";
 
 function ListSelector() {
   const { enabled, toggleSource } = useCalendar()

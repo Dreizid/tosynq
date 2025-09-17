@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { DateTimePicker } from "@/app/components/DateTimePicker";
+import { DateTimePicker } from "@/app/components/form/DateTimePicker";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import {
@@ -13,7 +13,7 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form"
-import { addTask, updateTask } from "../lib/db/dbActions";
+import { addTask, updateTask } from "../../lib/db/dbActions";
 
 interface DefaultFormValues {
   title?: string

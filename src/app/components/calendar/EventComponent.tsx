@@ -6,10 +6,10 @@ import { Label } from "@/components/ui/label"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Portal } from "@radix-ui/react-popover";
-import EventForm from "./EventForm";
+import EventForm from "../form/EventForm";
 import { Button } from "@/components/ui/button";
 import { TrashIcon } from "lucide-react";
-import { removeTask } from "../lib/db/dbActions";
+import { removeTask } from "../../lib/db/dbActions";
 
 function EventComponent({ event }: { event: EventApi }) {
   const [finished, setFinished] = useState<boolean>(false)
