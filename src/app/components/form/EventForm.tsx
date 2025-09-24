@@ -120,7 +120,7 @@ function EventForm({ title, description, from, to, eventId, className }: EventFo
               <FormItem>
                 <FormLabel>From</FormLabel>
                 <FormControl>
-                  <DateTimePicker date={field.value} onSelect={(newDate) => { field.onChange(newDate); console.log(newDate) }} />
+                  <DateTimePicker initialDate={field.value} onSelect={(newDate) => { field.onChange(newDate); }} />
                 </FormControl>
               </FormItem>
             )}
@@ -132,7 +132,7 @@ function EventForm({ title, description, from, to, eventId, className }: EventFo
               <FormItem>
                 <FormLabel>To</FormLabel>
                 <FormControl>
-                  <DateTimePicker date={field.value} onSelect={(newDate) => field.onChange(newDate)} />
+                  <DateTimePicker initialDate={field.value} onSelect={(newDate) => field.onChange(newDate)} />
                 </FormControl>
               </FormItem>
             )}
