@@ -11,15 +11,33 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
+/**
+ * Properties for DateTimePicker
+ */
 interface DateTimePickerProps {
+  /** The initial date object to set on the calendar, passing undefined will show `Select a date` instead. */
   initialDate: Date | undefined
+  /** The callback to update the initial date object. */
   onSelect: (date: Date | undefined) => void
 }
 
 const DEFAULT_TIME = "10:30:00"
+/**
+ * Parse a time string in "HH:mm:ss" format into [hour, minute, second].
+ * Assumes 24-hour format with zero-padded values.
+ * Does not support "HH:mm" or 12-hour formats.
+ * @param `time` - String in 24-hour format, zero-padded.
+ * @return Tuple [hour, minute, second].
+ */
 function parseTimeString(time: string): [number, number, number] {
   return time.split(":").map(Number) as [number, number, number]
 }
+
+/**
+ * Safely extract the time string from a `Date` object.
+ * @param `date` - Date object to extract the time from.
+ * @return string - Time string formatted in "HH:mm"
+ */
 function dateToTimeString(date: Date): string {
   if (!date || isNaN(date.getTime())) return DEFAULT_TIME
   return new Intl.DateTimeFormat("en-US", {
@@ -27,11 +45,27 @@ function dateToTimeString(date: Date): string {
     minute: "2-digit",
     hour12: false,
   }).format(date)
+}
+
+/**
+ * Safely set's the time on a the given Date object.
+ * @param time - String representation of time in "HH:mm:ss" format.
+ * @param date - Date | undefined object where to set the time.
+ * @return Date - Date with the time set.
+ * @return undefined - Returns undefined when the date given is undefined.
+ */
 function setTimeOnDate(time: string, date: Date | undefined): Date | undefined {
   if (!date) return
   const newDate = new Date(date)
   newDate.setHours(...parseTimeString(time))
   return newDate
+}
+
+/**
+ * DateTimePicker
+ *
+ * Provides a component that has a calendar modal and a time picker.
+ */
 export function DateTimePicker({ initialDate, onSelect }: DateTimePickerProps) {
   const [open, setOpen] = React.useState(false)
   const [time, setTime] = React.useState<string>(DEFAULT_TIME)
@@ -39,6 +73,7 @@ export function DateTimePicker({ initialDate, onSelect }: DateTimePickerProps) {
   React.useEffect(() => {
     onSelect(setTimeOnDate(time, initialDate))
   }, [time])
+
   return (
     <div className="flex gap-4">
       <div className="flex flex-col gap-3">
