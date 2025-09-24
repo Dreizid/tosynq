@@ -15,31 +15,30 @@ interface DateTimePickerProps {
   initialDate: Date | undefined
   onSelect: (date: Date | undefined) => void
 }
-  const [open, setOpen] = React.useState(false)
 
-  const setTimeOnDate = (time: string) => {
-    const [hour, minute, second] = time.split(":").map(Number)
-    console.log(time)
-    let newDate: Date
-    if (!date) {
-      newDate = new Date()
-      newDate.setHours(10, 30)
-    } else {
-      newDate = new Date(date)
-    }
-    newDate.setHours(hour)
-    newDate.setMinutes(minute)
-    newDate.setSeconds(second)
-    onSelect(newDate)
-  }
-  const formatter = new Intl.DateTimeFormat("en-US", {
+const DEFAULT_TIME = "10:30:00"
+function parseTimeString(time: string): [number, number, number] {
+  return time.split(":").map(Number) as [number, number, number]
+}
+function dateToTimeString(date: Date): string {
+  if (!date || isNaN(date.getTime())) return DEFAULT_TIME
+  return new Intl.DateTimeFormat("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
-  })
-  console.log(formatter.format(date))
+  }).format(date)
+function setTimeOnDate(time: string, date: Date | undefined): Date | undefined {
+  if (!date) return
+  const newDate = new Date(date)
+  newDate.setHours(...parseTimeString(time))
+  return newDate
 export function DateTimePicker({ initialDate, onSelect }: DateTimePickerProps) {
+  const [open, setOpen] = React.useState(false)
+  const [time, setTime] = React.useState<string>(DEFAULT_TIME)
 
+  React.useEffect(() => {
+    onSelect(setTimeOnDate(time, initialDate))
+  }, [time])
   return (
     <div className="flex gap-4">
       <div className="flex flex-col gap-3">
@@ -63,7 +62,7 @@ export function DateTimePicker({ initialDate, onSelect }: DateTimePickerProps) {
               selected={initialDate}
               captionLayout="dropdown"
               onSelect={(date) => {
-                onSelect(date)
+                onSelect(setTimeOnDate(time, date as Date))
                 setOpen(false)
               }}
             />
@@ -78,8 +77,10 @@ export function DateTimePicker({ initialDate, onSelect }: DateTimePickerProps) {
           type="time"
           id="time-picker"
           step="1"
-          defaultValue={formatter.format(date)}
-          onChange={(e) => setTimeOnDate(e.target.value)}
+          value={dateToTimeString(initialDate as Date)}
+          onChange={(e) => {
+            setTime(e.target.value)
+          }}
           className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
         />
       </div>
