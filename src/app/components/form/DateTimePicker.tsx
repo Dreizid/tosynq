@@ -12,10 +12,9 @@ import {
 } from "@/components/ui/popover"
 
 interface DateTimePickerProps {
-  date: Date | undefined
+  initialDate: Date | undefined
   onSelect: (date: Date | undefined) => void
 }
-export function DateTimePicker({ date, onSelect }: DateTimePickerProps) {
   const [open, setOpen] = React.useState(false)
 
   const setTimeOnDate = (time: string) => {
@@ -39,6 +38,7 @@ export function DateTimePicker({ date, onSelect }: DateTimePickerProps) {
     hour12: false,
   })
   console.log(formatter.format(date))
+export function DateTimePicker({ initialDate, onSelect }: DateTimePickerProps) {
 
   return (
     <div className="flex gap-4">
@@ -53,14 +53,14 @@ export function DateTimePicker({ date, onSelect }: DateTimePickerProps) {
               id="date-picker"
               className="w-32 justify-between font-normal"
             >
-              {date ? date.toLocaleDateString() : "Select date"}
+              {initialDate ? initialDate.toLocaleDateString() : "Select date"}
               <ChevronDownIcon />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto overflow-hidden p-0" align="start">
             <Calendar
               mode="single"
-              selected={date}
+              selected={initialDate}
               captionLayout="dropdown"
               onSelect={(date) => {
                 onSelect(date)
