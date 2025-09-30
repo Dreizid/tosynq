@@ -67,30 +67,23 @@ function EventForm({
 
   async function submitTask(values: z.infer<typeof formSchema>) {
     try {
-      eventId ? updateTask({
-        id: eventId,
+      const baseValues = {
         title: values.title,
         from: values.from,
         to: values.to,
         description: values.description,
-        type: 'event',
+        type: "event" as TaskType,
         completed: false,
         createdAt: new Date(),
-        source: 'manual',
+        source: "manual" as SourceType,
         deleted: false,
-        allDay: false
-      }) : addTask({
-        title: values.title,
-        from: values.from,
-        to: values.to,
-        description: values.description,
-        type: 'event',
-        completed: false,
-        createdAt: new Date(),
-        source: 'manual',
-        deleted: false,
-        allDay: false
-      })
+        allDay: false,
+      };
+      if (eventId) {
+        await updateTask({ id: eventId, ...baseValues });
+      } else {
+        await addTask(baseValues);
+      }
     } catch (error) {
       console.log(error);
     }
