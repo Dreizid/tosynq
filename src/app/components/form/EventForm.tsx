@@ -1,5 +1,5 @@
-"use client"
-import { zodResolver } from "@hookform/resolvers/zod"
+"use client";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -12,38 +12,49 @@ import {
   FormField,
   FormItem,
   FormLabel,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import { addTask, updateTask } from "../../lib/db/dbActions";
+import { SourceType, TaskType } from "@/app/lib/db/dexie";
 
 interface DefaultFormValues {
-  title?: string
-  description?: string
-  from?: Date
-  to?: Date
+  title?: string;
+  description?: string;
+  from?: Date;
+  to?: Date;
 }
 
 interface EventFormDefaultValues extends DefaultFormValues {
-  className?: string
-  eventId?: number
+  className?: string;
+  eventId?: number;
 }
 
-const formSchema = z.object({
-  title: z.string()
-    .min(2, { message: "Title must be atleast 2 characters" })
-    .max(50, { message: "Title must not exceed 50 characters" }),
-  from: z.date({
-    error: "Start date is required"
-  }),
-  to: z.date({
-    error: "End date is required"
-  }),
-  description: z.string().max(200).optional(),
-}).refine((data) => !data.from || !data.to || data.to > data.from, {
-  message: "End date must be after start date",
-  path: ["to"]
-})
+const formSchema = z
+  .object({
+    title: z
+      .string()
+      .min(2, { message: "Title must be atleast 2 characters" })
+      .max(50, { message: "Title must not exceed 50 characters" }),
+    from: z.date({
+      error: "Start date is required",
+    }),
+    to: z.date({
+      error: "End date is required",
+    }),
+    description: z.string().max(200).optional(),
+  })
+  .refine((data) => !data.from || !data.to || data.to > data.from, {
+    message: "End date must be after start date",
+    path: ["to"],
+  });
 
-function EventForm({ title, description, from, to, eventId, className }: EventFormDefaultValues) {
+function EventForm({
+  title,
+  description,
+  from,
+  to,
+  eventId,
+  className,
+}: EventFormDefaultValues) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,8 +62,8 @@ function EventForm({ title, description, from, to, eventId, className }: EventFo
       description: description ?? "",
       from: from ?? undefined,
       to: to ?? undefined,
-    }
-  })
+    },
+  });
 
   async function submitTask(values: z.infer<typeof formSchema>) {
     try {
@@ -81,7 +92,7 @@ function EventForm({ title, description, from, to, eventId, className }: EventFo
         allDay: false
       })
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -105,7 +116,7 @@ function EventForm({ title, description, from, to, eventId, className }: EventFo
             control={form.control}
             name="description"
             render={({ field }) => (
-              <FormItem >
+              <FormItem>
                 <FormLabel className="font-semibold">Description</FormLabel>
                 <FormControl>
                   <Textarea placeholder="Description" {...field} />
@@ -141,7 +152,7 @@ function EventForm({ title, description, from, to, eventId, className }: EventFo
         </form>
       </Form>
     </div>
-  )
+  );
 }
 
 export default EventForm;
