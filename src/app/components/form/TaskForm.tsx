@@ -105,11 +105,8 @@ function TaskForm({ className }: { className?: string }) {
                 {fromChecked && (
                   <FormControl>
                     <DateTimePicker
-                      date={field.value}
-                      onSelect={(newDate) => {
-                        field.onChange(newDate);
-                        console.log(newDate);
-                      }}
+                      initialDate={field.value}
+                      onSelect={field.onChange}
                     />
                   </FormControl>
                 )}
@@ -132,8 +129,8 @@ function TaskForm({ className }: { className?: string }) {
                 {toChecked && (
                   <FormControl>
                     <DateTimePicker
-                      date={field.value}
-                      onSelect={(newDate) => field.onChange(newDate)}
+                      initialDate={field.value}
+                      onSelect={field.onChange}
                     />
                   </FormControl>
                 )}
