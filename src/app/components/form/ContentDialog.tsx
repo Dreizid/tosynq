@@ -81,7 +81,7 @@ type ContentDialogProps = TabDialogProps | SimpleDialogProps;
  * - `SimpleDialog`: Displays static content without tabs.
  * - `TabDialog`: Displays tabbed content.
  *
- * `TabDialog` is automatically inffered when `tabs` is provided, otherwise it renders `SimpleDialog`.
+ * `TabDialog` is automatically inferred when `tabs` is provided, otherwise it renders `SimpleDialog`.
  * Controlled by the parent via `open` and `onOpenChange`.
  */
 function ContentDialog({ open, onOpenChange, ...props }: ContentDialogProps) {

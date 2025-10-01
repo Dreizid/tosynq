@@ -48,7 +48,7 @@ function dateToTimeString(date: Date): string {
 }
 
 /**
- * Safely set's the time on a the given Date object.
+ * Safely sets the time on the given Date object.
  * @param time - String representation of time in "HH:mm:ss" format.
  * @param date - Date | undefined object where to set the time.
  * @return Date - Date with the time set.
