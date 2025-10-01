@@ -112,7 +112,7 @@ export function DateTimePicker({ initialDate, onSelect }: DateTimePickerProps) {
           type="time"
           id="time-picker"
           step="1"
-          value={dateToTimeString(initialDate as Date)}
+          value={dateToTimeString(initialDate)}
           onChange={(e) => {
             setTime(e.target.value)
           }}
