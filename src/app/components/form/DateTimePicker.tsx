@@ -11,34 +11,68 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
+/**
+ * Properties for DateTimePicker
+ */
 interface DateTimePickerProps {
-  date: Date | undefined
+  /** The initial date object to set on the calendar, passing undefined will show `Select a date` instead. */
+  initialDate: Date | undefined
+  /** The callback to update the initial date object. */
   onSelect: (date: Date | undefined) => void
 }
-export function DateTimePicker({ date, onSelect }: DateTimePickerProps) {
-  const [open, setOpen] = React.useState(false)
 
-  const setTimeOnDate = (time: string) => {
-    const [hour, minute, second] = time.split(":").map(Number)
-    console.log(time)
-    let newDate: Date
-    if (!date) {
-      newDate = new Date()
-      newDate.setHours(10, 30)
-    } else {
-      newDate = new Date(date)
-    }
-    newDate.setHours(hour)
-    newDate.setMinutes(minute)
-    newDate.setSeconds(second)
-    onSelect(newDate)
-  }
-  const formatter = new Intl.DateTimeFormat("en-US", {
+const DEFAULT_TIME = "10:30:00"
+/**
+ * Parse a time string in "HH:mm:ss" format into [hour, minute, second].
+ * Assumes 24-hour format with zero-padded values.
+ * Does not support "HH:mm" or 12-hour formats.
+ * @param `time` - String in 24-hour format, zero-padded.
+ * @return Tuple [hour, minute, second].
+ */
+function parseTimeString(time: string): [number, number, number] {
+  return time.split(":").map(Number) as [number, number, number]
+}
+
+/**
+ * Safely extract the time string from a `Date` object.
+ * @param `date` - Date object to extract the time from.
+ * @return string - Time string formatted in "HH:mm"
+ */
+function dateToTimeString(date: Date): string {
+  if (!date || isNaN(date.getTime())) return DEFAULT_TIME
+  return new Intl.DateTimeFormat("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
-  })
-  console.log(formatter.format(date))
+  }).format(date)
+}
+
+/**
+ * Safely sets the time on the given Date object.
+ * @param time - String representation of time in "HH:mm:ss" format.
+ * @param date - Date | undefined object where to set the time.
+ * @return Date - Date with the time set.
+ * @return undefined - Returns undefined when the date given is undefined.
+ */
+function setTimeOnDate(time: string, date: Date | undefined): Date | undefined {
+  if (!date) return
+  const newDate = new Date(date)
+  newDate.setHours(...parseTimeString(time))
+  return newDate
+}
+
+/**
+ * DateTimePicker
+ *
+ * Provides a component that has a calendar modal and a time picker.
+ */
+export function DateTimePicker({ initialDate, onSelect }: DateTimePickerProps) {
+  const [open, setOpen] = React.useState(false)
+  const [time, setTime] = React.useState<string>(DEFAULT_TIME)
+
+  React.useEffect(() => {
+    onSelect(setTimeOnDate(time, initialDate))
+  }, [time])
 
   return (
     <div className="flex gap-4">
@@ -53,17 +87,17 @@ export function DateTimePicker({ date, onSelect }: DateTimePickerProps) {
               id="date-picker"
               className="w-32 justify-between font-normal"
             >
-              {date ? date.toLocaleDateString() : "Select date"}
+              {initialDate ? initialDate.toLocaleDateString() : "Select date"}
               <ChevronDownIcon />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto overflow-hidden p-0" align="start">
             <Calendar
               mode="single"
-              selected={date}
+              selected={initialDate}
               captionLayout="dropdown"
               onSelect={(date) => {
-                onSelect(date)
+                onSelect(setTimeOnDate(time, date as Date))
                 setOpen(false)
               }}
             />
@@ -78,8 +112,10 @@ export function DateTimePicker({ date, onSelect }: DateTimePickerProps) {
           type="time"
           id="time-picker"
           step="1"
-          defaultValue={formatter.format(date)}
-          onChange={(e) => setTimeOnDate(e.target.value)}
+          value={dateToTimeString(initialDate)}
+          onChange={(e) => {
+            setTime(e.target.value)
+          }}
           className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
         />
       </div>
