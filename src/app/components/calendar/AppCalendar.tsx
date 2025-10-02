@@ -4,16 +4,12 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "../../lib/db/dexie";
 import { useRef, useEffect, useMemo, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
-import { CalendarApi, EventApi } from "@fullcalendar/core";
+import { CalendarApi } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import EventComponent from "@/app/components/calendar/EventComponent";
 import { useCalendar } from "../../context/calendar-context";
-import FormDialog from "../form/Dialog";
-import EventFormDialog from "../form/FormDialogs";
-import EventForm from "../form/EventForm";
 import { TaskType, SourceType } from "@/app/lib/db/dexie";
-import { EventImpl } from "@fullcalendar/core/internal";
 
 export type View =
   | "dayGridDay"
@@ -38,55 +34,28 @@ export type EventExtendedProps = {
 export default function AppCalendar({ date, range }: AppCalendarProps) {
   const { enabled } = useCalendar();
   const [editModal, setEditModal] = useState(false);
-  const taskList = useLiveQuery(() => db.task.toArray());
-  const task = useMemo(
+  const calendarItems = useLiveQuery(() => db.task.toArray());
+  const finalTaskList = useMemo(
     () =>
-      (taskList ?? [])
-        .filter((task) => task.type === "task")
-        .map((task) => ({
-          title: task.title,
-          start: task.from,
-          end: task.to,
-          allDay: task.allDay,
-          backgroundColor: "#c6d2ff",
-          textColor: "black",
-          extendedProps: {
-            dbId: task.id,
-            type: task.type,
-            source: task.source,
-            description: task.description,
-            deleted: task.deleted,
-          },
-        })),
-    [taskList],
-  );
-
-  const events = useMemo(
-    () =>
-      (taskList ?? [])
-        .filter((task) => task.type === "event")
-        .map((task) => ({
-          title: task.title,
-          start: task.from,
-          end: task.to,
-          allDay: task.allDay,
+      (calendarItems ?? [])
+        .filter((item) => enabled.includes(item.type))
+        .map((item) => ({
+          title: item.title,
+          start: item.from,
+          end: item.to,
+          allDay: item.allDay,
           backgroundColor: "#D7C6FF",
           textColor: "black",
           extendedProps: {
-            dbId: task.id,
-            type: task.type,
-            source: task.source,
-            description: task.description,
-            deleted: task.deleted,
+            dbId: item.id,
+            type: item.type,
+            source: item.source,
+            description: item.description,
+            deleted: item.deleted,
           },
         })),
-    [taskList],
+    [calendarItems, enabled],
   );
-
-  const finalTaskList = [
-    ...(enabled.includes("events") ? events : []),
-    ...(enabled.includes("task") ? task : []),
-  ];
 
   const calendarRef = useRef<FullCalendar | null>(null);
 
