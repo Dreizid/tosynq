@@ -31,6 +31,27 @@ export type EventExtendedProps = {
   deleted: boolean;
 };
 
+// Subject to testing
+/**
+ * A custom hook that fire's the `callback` when the `ref` changes.
+ *
+ * @param ref - A React ref object to watch.
+ * @param callback - A function to call whenever the `ref.current` value changes.
+ */
+function useResizeObserver<T extends HTMLElement>(
+  ref: React.RefObject<T | null>,
+  callback: () => void,
+) {
+  useEffect(() => {
+    if (!ref.current) return;
+    const resizeObserver = new ResizeObserver(callback);
+    resizeObserver.observe(ref.current);
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [ref, callback]);
+}
+
 export default function AppCalendar({ date, range }: AppCalendarProps) {
   const { enabled } = useCalendar();
   const calendarItems = useLiveQuery(() => db.task.toArray());
@@ -67,25 +88,11 @@ export default function AppCalendar({ date, range }: AppCalendarProps) {
       }, 0);
     }
   }, [date, range]);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const calendarApi = calendarRef.current?.getApi();
-
-    const resizeObserver = new ResizeObserver(() => {
-      calendarApi?.updateSize();
-    });
-
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current);
-    }
-
-    return () => {
-      if (containerRef.current) {
-        resizeObserver.unobserve(containerRef.current);
-      }
-    };
-  }, []);
+  useResizeObserver(containerRef, () =>
+    calendarRef.current?.getApi().updateSize(),
+  );
 
   return (
     <div className="h-full calendar-wrapper" ref={containerRef}>
