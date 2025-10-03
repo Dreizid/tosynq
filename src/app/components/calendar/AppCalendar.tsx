@@ -101,16 +101,14 @@ export default function AppCalendar({ date, range }: AppCalendarProps) {
         headerToolbar={false}
         views={{
           dayGridWeek: {
-            dayHeaderContent: (arg) => {
-              return {
-                html: `
-									<div class="fc-custom-header">
-										<div style="font-weight: normal">${arg.date.toLocaleDateString("en-US", { weekday: "short" })}</div>
-										<div class="date">${arg.date.getDate()}</div>
-									</div>
-								`,
-              };
-            },
+            dayHeaderContent: (arg) => (
+              <div className="fc-custom-header">
+                <div className="font-normal">
+                  {arg.date.toLocaleDateString("en-US", { weekday: "short" })}
+                </div>
+                <div className="date">{arg.date.getDate()}</div>
+              </div>
+            ),
           },
         }}
       />
