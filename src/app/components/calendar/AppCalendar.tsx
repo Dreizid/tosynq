@@ -24,7 +24,7 @@ interface AppCalendarProps {
 }
 
 export type EventExtendedProps = {
-  dbid: number;
+  dbId: number;
   type: TaskType;
   source: SourceType;
   description: string;
@@ -33,7 +33,6 @@ export type EventExtendedProps = {
 
 export default function AppCalendar({ date, range }: AppCalendarProps) {
   const { enabled } = useCalendar();
-  const [editModal, setEditModal] = useState(false);
   const calendarItems = useLiveQuery(() => db.task.toArray());
   const finalTaskList = useMemo(
     () =>
