@@ -1,7 +1,7 @@
 "use client";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "../../lib/db/dexie";
+import { db, Task } from "../../lib/db/dexie";
 import { useRef, useMemo, useLayoutEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import { CalendarApi } from "@fullcalendar/core";
@@ -32,28 +32,31 @@ export type EventExtendedProps = {
   deleted: boolean;
 };
 
+function mapTasks(task: Task[], enabled: TaskType[]) {
+  return task
+    .filter((item) => enabled.includes(item.type))
+    .map((item) => ({
+      title: item.title,
+      start: item.from,
+      end: item.to,
+      allDay: item.allDay,
+      backgroundColor: "#D7C6FF",
+      textColor: "black",
+      extendedProps: {
+        dbId: item.id,
+        type: item.type,
+        source: item.source,
+        description: item.description,
+        deleted: item.deleted,
+      },
+    }));
+}
+
 export default function AppCalendar({ date, range }: AppCalendarProps) {
   const { enabled } = useCalendar();
   const calendarItems = useLiveQuery(() => db.task.toArray());
   const finalTaskList = useMemo(
-    () =>
-      (calendarItems ?? [])
-        .filter((item) => enabled.includes(item.type))
-        .map((item) => ({
-          title: item.title,
-          start: item.from,
-          end: item.to,
-          allDay: item.allDay,
-          backgroundColor: "#D7C6FF",
-          textColor: "black",
-          extendedProps: {
-            dbId: item.id,
-            type: item.type,
-            source: item.source,
-            description: item.description,
-            deleted: item.deleted,
-          },
-        })),
+    () => mapTasks(calendarItems ?? [], enabled),
     [calendarItems, enabled],
   );
 
