@@ -18,7 +18,7 @@ function EventComponent({ event }: { event: EventApi }) {
   const [finished, setFinished] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 
-  const { className, dbId, description } = event.extendedProps;
+  const { className = "", dbId, description } = event.extendedProps;
   const { title, start, end } = event;
 
   const handleDelete = async () => {
