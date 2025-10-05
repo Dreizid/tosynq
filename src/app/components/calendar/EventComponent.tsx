@@ -37,9 +37,7 @@ function EventComponent({ event }: { event: EventApi }) {
             checked={finished}
             onCheckedChange={(value) => setFinished(!!value)}
           />
-          <Label className={`${finished ? "line-through" : ""}`}>
-            {event.title}
-          </Label>
+          <Label className={`${finished ? "line-through" : ""}`}>{title}</Label>
         </div>
       </PopoverTrigger>
       <Portal>
