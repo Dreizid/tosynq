@@ -22,7 +22,10 @@ function EventComponent({ event }: { event: EventApi }) {
   const { className, dbId, description } = event.extendedProps;
   const { title, start, end } = event;
 
-  const handleDelete = () => removeTask(dbId);
+  const handleDelete = async () => {
+    await removeTask(dbId);
+    setOpen(false);
+  };
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
