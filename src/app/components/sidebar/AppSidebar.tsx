@@ -1,24 +1,21 @@
-"use client"
-import { Home, Inbox, Search, SeparatorHorizontal, Settings } from "lucide-react"
+"use client";
+import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarHeader,
-  SidebarGroupLabel,
   SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
-  SidebarMenuItem,
   SidebarMenuButton,
-  SidebarSeparator
-} from "@/components/ui/sidebar"
-import { Calendar } from "@/components/ui/calendar"
-import Link from "next/link"
-import AppCalendar from "../calendar/AppCalendar"
-import SidebarCalendar from "./SidebarCalendar"
-import { Separator } from "@/components/ui/separator"
-import ListSelector from "./ListSelector"
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
+import { Home, Inbox, Search, Settings } from "lucide-react";
+import Link from "next/link";
+import ListSelector from "@/app/components/sidebar/ListSelector";
+import SidebarCalendar from "@/app/components/sidebar/SidebarCalendar";
 
 const items = [
   {
@@ -38,12 +35,11 @@ const items = [
     icon: Search,
   },
   {
-
     title: "Settings",
     url: "#",
     icon: Settings,
   },
-]
+];
 
 export function AppSidebar() {
   return (
@@ -77,5 +73,5 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
-  )
+  );
 }

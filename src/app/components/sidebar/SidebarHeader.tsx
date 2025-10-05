@@ -1,11 +1,15 @@
-"use client"
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbPage } from "@/components/ui/breadcrumb";
-import { useCalendar } from "../../context/calendar-context";
-import ViewSelector from "./ViewSelector";
-import ListSelector from "../ListSelectorSelector";
+"use client";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb";
+import { useCalendar } from "@/app/context/calendar-context";
+import ViewSelector from "@/app/components/sidebar/ViewSelector";
 
-export default function SidebarHeader({ }) {
-  const { date } = useCalendar()
+export default function SidebarHeader({}) {
+  const { date } = useCalendar();
   const options = {
     year: "numeric",
     month: "long",
@@ -15,7 +19,9 @@ export default function SidebarHeader({ }) {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbPage className="text-2xl mx-2 font-bold">{date.toLocaleDateString("en-US", options)}</BreadcrumbPage>
+            <BreadcrumbPage className="text-2xl mx-2 font-bold">
+              {date.toLocaleDateString("en-US", options)}
+            </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -23,5 +29,5 @@ export default function SidebarHeader({ }) {
         <ViewSelector />
       </div>
     </header>
-  )
+  );
 }
