@@ -1,16 +1,15 @@
 "use client";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { useLiveQuery } from "dexie-react-hooks";
-import { db, Task } from "../../lib/db/dexie";
-import { useRef, useMemo, useLayoutEffect } from "react";
-import FullCalendar from "@fullcalendar/react";
+import EventComponent from "@/app/components/calendar/EventComponent";
+import { useCalendar } from "@/app/context/calendar-context";
+import { useResizeObserver } from "@/app/hooks/useResizeObserver";
+import { db, SourceType, Task, TaskType } from "@/app/lib/db/dexie";
 import { CalendarApi } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import EventComponent from "@/app/components/calendar/EventComponent";
-import { useCalendar } from "../../context/calendar-context";
-import { TaskType, SourceType } from "@/app/lib/db/dexie";
-import { useResizeObserver } from "@/app/hooks/useResizeObserver";
+import { useLiveQuery } from "dexie-react-hooks";
+import { useLayoutEffect, useMemo, useRef } from "react";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
 export type View =
   | "dayGridDay"
