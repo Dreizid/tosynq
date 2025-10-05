@@ -33,7 +33,7 @@ function EventComponent({ event }: { event: EventApi }) {
           onClick={() => setOpen(true)}
         >
           <Checkbox
-            id={`item-{dbId}`}
+            id={`item-${dbId}`}
             checked={finished}
             onCheckedChange={(value) => setFinished(!!value)}
           />
