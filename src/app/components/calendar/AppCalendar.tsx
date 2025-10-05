@@ -9,7 +9,6 @@ import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useLayoutEffect, useMemo, useRef } from "react";
-import "react-big-calendar/lib/css/react-big-calendar.css";
 
 export type View =
   | "dayGridDay"
