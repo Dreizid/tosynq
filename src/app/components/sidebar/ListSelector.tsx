@@ -1,6 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { useCalendar } from "../../context/calendar-context";
+import { useCalendar } from "@/app/context/calendar-context";
 import { TaskType } from "@/app/lib/db/dexie";
 
 const sources: { id: string; key: TaskType; label: string }[] = [
