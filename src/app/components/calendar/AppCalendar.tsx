@@ -3,7 +3,7 @@ import EventComponent from "@/app/components/calendar/EventComponent";
 import { useCalendar } from "@/app/context/calendar-context";
 import { useResizeObserver } from "@/app/hooks/useResizeObserver";
 import { db, SourceType, Task, TaskType } from "@/app/lib/db/dexie";
-import { CalendarApi } from "@fullcalendar/core";
+import { CalendarApi, DayHeaderContentArg } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -88,17 +88,21 @@ export default function AppCalendar({ date, range }: AppCalendarProps) {
         headerToolbar={false}
         views={{
           dayGridWeek: {
-            dayHeaderContent: (arg) => (
-              <div className="fc-custom-header">
-                <div className="font-normal">
-                  {arg.date.toLocaleDateString("en-US", { weekday: "short" })}
-                </div>
-                <div className="date">{arg.date.getDate()}</div>
-              </div>
-            ),
+            dayHeaderContent: (arg) => <CustomWeekHeader date={arg.date} />,
           },
         }}
       />
+    </div>
+  );
+}
+
+function CustomWeekHeader({ date }: { date: Date }) {
+  return (
+    <div className="fc-custom-header">
+      <div className="font-normal">
+        {date.toLocaleDateString("en-US", { weekday: "short" })}
+      </div>
+      <div className="date">{date.getDate()}</div>
     </div>
   );
 }
