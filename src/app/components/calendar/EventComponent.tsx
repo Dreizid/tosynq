@@ -18,11 +18,14 @@ import { removeTask } from "../../lib/db/dbActions";
 function EventComponent({ event }: { event: EventApi }) {
   const [finished, setFinished] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
+
+  const { className, dbId, description } = event.extendedProps;
+  const { title, start, end } = event;
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <div
-          className={`${event.extendedProps.className} flex flex-row gap-2 p-1`}
+          className={`${className} flex flex-row gap-2 p-1`}
           onClick={() => setOpen(true)}
         >
           <Checkbox
@@ -48,11 +51,11 @@ function EventComponent({ event }: { event: EventApi }) {
             </Button>
           </div>
           <EventForm
-            eventId={event.extendedProps.dbId}
-            title={event.title}
-            description={event.extendedProps.description}
-            from={event?.start ?? undefined}
-            to={event?.end ?? undefined}
+            eventId={dbId}
+            title={title}
+            description={description}
+            from={start ?? undefined}
+            to={end ?? undefined}
           />
         </PopoverContent>
       </Portal>
