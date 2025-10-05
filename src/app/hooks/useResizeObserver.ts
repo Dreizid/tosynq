@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 // Subject to testing
 /**
- * A custom hook that fire's the `callback` when the `ref` changes.
+ * A custom hook that fires the `callback` when the `ref` changes.
  *
  * @param ref - A React ref object to watch.
  * @param callback - A function to call whenever the `ref.current` value changes.
