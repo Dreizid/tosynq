@@ -8,7 +8,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Input } from "@/components/ui/input";
 import { Portal } from "@radix-ui/react-popover";
 import EventForm from "../form/EventForm";
 import { Button } from "@/components/ui/button";

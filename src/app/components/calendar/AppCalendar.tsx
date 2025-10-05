@@ -3,7 +3,7 @@ import EventComponent from "@/app/components/calendar/EventComponent";
 import { useCalendar } from "@/app/context/calendar-context";
 import { useResizeObserver } from "@/app/hooks/useResizeObserver";
 import { db, SourceType, Task, TaskType } from "@/app/lib/db/dexie";
-import { CalendarApi, DayHeaderContentArg } from "@fullcalendar/core";
+import { CalendarApi } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
