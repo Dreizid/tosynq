@@ -1,19 +1,14 @@
 "use client";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "../../lib/db/dexie";
-import { useRef, useEffect, useMemo, useState } from "react";
-import FullCalendar from "@fullcalendar/react";
-import { CalendarApi, EventApi } from "@fullcalendar/core";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
 import EventComponent from "@/app/components/calendar/EventComponent";
-import { useCalendar } from "../../context/calendar-context";
-import FormDialog from "../form/Dialog";
-import EventFormDialog from "../form/FormDialogs";
-import EventForm from "../form/EventForm";
-import { TaskType, SourceType } from "@/app/lib/db/dexie";
-import { EventImpl } from "@fullcalendar/core/internal";
+import { useCalendar } from "@/app/context/calendar-context";
+import { useResizeObserver } from "@/app/hooks/useResizeObserver";
+import { db, SourceType, Task, TaskType } from "@/app/lib/db/dexie";
+import { CalendarApi } from "@fullcalendar/core";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import FullCalendar from "@fullcalendar/react";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import { useLiveQuery } from "dexie-react-hooks";
+import { useLayoutEffect, useMemo, useRef } from "react";
 
 export type View =
   | "dayGridDay"
@@ -28,96 +23,55 @@ interface AppCalendarProps {
 }
 
 export type EventExtendedProps = {
-  dbid: number;
+  dbId: number;
   type: TaskType;
   source: SourceType;
   description: string;
   deleted: boolean;
 };
 
+function mapTasks(task: Task[], enabled: TaskType[]) {
+  return task
+    .filter((item) => enabled.includes(item.type))
+    .map((item) => ({
+      title: item.title,
+      start: item.from,
+      end: item.to,
+      allDay: item.allDay,
+      backgroundColor: "#D7C6FF",
+      textColor: "black",
+      extendedProps: {
+        dbId: item.id,
+        type: item.type,
+        source: item.source,
+        description: item.description,
+        deleted: item.deleted,
+      },
+    }));
+}
+
 export default function AppCalendar({ date, range }: AppCalendarProps) {
   const { enabled } = useCalendar();
-  const [editModal, setEditModal] = useState(false);
-  const taskList = useLiveQuery(() => db.task.toArray());
-  const task = useMemo(
-    () =>
-      (taskList ?? [])
-        .filter((task) => task.type === "task")
-        .map((task) => ({
-          title: task.title,
-          start: task.from,
-          end: task.to,
-          allDay: task.allDay,
-          backgroundColor: "#c6d2ff",
-          textColor: "black",
-          extendedProps: {
-            dbId: task.id,
-            type: task.type,
-            source: task.source,
-            description: task.description,
-            deleted: task.deleted,
-          },
-        })),
-    [taskList],
+  const calendarItems = useLiveQuery(() => db.task.toArray());
+  const finalTaskList = useMemo(
+    () => mapTasks(calendarItems ?? [], enabled),
+    [calendarItems, enabled],
   );
-
-  const events = useMemo(
-    () =>
-      (taskList ?? [])
-        .filter((task) => task.type === "event")
-        .map((task) => ({
-          title: task.title,
-          start: task.from,
-          end: task.to,
-          allDay: task.allDay,
-          backgroundColor: "#D7C6FF",
-          textColor: "black",
-          extendedProps: {
-            dbId: task.id,
-            type: task.type,
-            source: task.source,
-            description: task.description,
-            deleted: task.deleted,
-          },
-        })),
-    [taskList],
-  );
-
-  const finalTaskList = [
-    ...(enabled.includes("events") ? events : []),
-    ...(enabled.includes("task") ? task : []),
-  ];
 
   const calendarRef = useRef<FullCalendar | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const calendarApi: CalendarApi | undefined = calendarRef.current?.getApi();
     if (calendarApi) {
-      setTimeout(() => {
-        calendarApi.gotoDate(date);
-        calendarApi.changeView(range);
-      }, 0);
+      calendarApi.gotoDate(date);
+      calendarApi.changeView(range);
     }
   }, [date, range]);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const calendarApi = calendarRef.current?.getApi();
-
-    const resizeObserver = new ResizeObserver(() => {
-      calendarApi?.updateSize();
-    });
-
-    if (containerRef.current) {
-      resizeObserver.observe(containerRef.current);
-    }
-
-    return () => {
-      if (containerRef.current) {
-        resizeObserver.unobserve(containerRef.current);
-      }
-    };
-  }, []);
+  useResizeObserver(containerRef, () =>
+    calendarRef.current?.getApi().updateSize(),
+  );
 
   return (
     <div className="h-full calendar-wrapper" ref={containerRef}>
@@ -133,19 +87,21 @@ export default function AppCalendar({ date, range }: AppCalendarProps) {
         headerToolbar={false}
         views={{
           dayGridWeek: {
-            dayHeaderContent: (arg) => {
-              return {
-                html: `
-									<div class="fc-custom-header">
-										<div style="font-weight: normal">${arg.date.toLocaleDateString("en-US", { weekday: "short" })}</div>
-										<div class="date">${arg.date.getDate()}</div>
-									</div>
-								`,
-              };
-            },
+            dayHeaderContent: (arg) => <CustomWeekHeader date={arg.date} />,
           },
         }}
       />
+    </div>
+  );
+}
+
+function CustomWeekHeader({ date }: { date: Date }) {
+  return (
+    <div className="fc-custom-header">
+      <div className="font-normal">
+        {date.toLocaleDateString("en-US", { weekday: "short" })}
+      </div>
+      <div className="date">{date.getDate()}</div>
     </div>
   );
 }

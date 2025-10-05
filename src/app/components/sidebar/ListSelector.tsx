@@ -5,16 +5,24 @@ import { useCalendar } from "../../context/calendar-context";
 import { View } from "../calendar/AppCalendar";
 
 function ListSelector() {
-  const { enabled, toggleSource } = useCalendar()
+  const { enabled, toggleSource } = useCalendar();
   return (
     <div className="grid gap-2 mx-3">
       <div className="flex items-center gap-1">
-        <Checkbox id="events" checked={enabled.includes("events")} onCheckedChange={() => toggleSource("events")} />
+        <Checkbox
+          id="events"
+          checked={enabled.includes("event")}
+          onCheckedChange={() => toggleSource("event")}
+        />
         <Label htmlFor="events">Events</Label>
       </div>
       <div className="flex items-center gap-1">
-        <Checkbox id="task" checked={enabled.includes("task")} onCheckedChange={() => toggleSource("task")} />
-        <Label htmlFor="task" >Task</Label>
+        <Checkbox
+          id="task"
+          checked={enabled.includes("task")}
+          onCheckedChange={() => toggleSource("task")}
+        />
+        <Label htmlFor="task">Task</Label>
       </div>
       {
         // <div className="flex items-center gap-1">
@@ -25,7 +33,7 @@ function ListSelector() {
         // </div>
       }
     </div>
-  )
+  );
 }
 
 export default ListSelector;
