@@ -2,7 +2,7 @@
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "../../lib/db/dexie";
-import { useRef, useEffect, useMemo, useState } from "react";
+import { useRef, useEffect, useMemo, useState, useLayoutEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import { CalendarApi } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -79,13 +79,11 @@ export default function AppCalendar({ date, range }: AppCalendarProps) {
 
   const calendarRef = useRef<FullCalendar | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const calendarApi: CalendarApi | undefined = calendarRef.current?.getApi();
     if (calendarApi) {
-      setTimeout(() => {
-        calendarApi.gotoDate(date);
-        calendarApi.changeView(range);
-      }, 0);
+      calendarApi.gotoDate(date);
+      calendarApi.changeView(range);
     }
   }, [date, range]);
   const containerRef = useRef<HTMLDivElement>(null);
