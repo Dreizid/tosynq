@@ -21,6 +21,8 @@ function EventComponent({ event }: { event: EventApi }) {
 
   const { className, dbId, description } = event.extendedProps;
   const { title, start, end } = event;
+
+  const handleDelete = () => removeTask(dbId);
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -43,9 +45,7 @@ function EventComponent({ event }: { event: EventApi }) {
           <div className="flex">
             <Button
               className="h-4 w-4 bg-transparent ml-auto"
-              onClick={() => {
-                removeTask(event.extendedProps.dbId);
-              }}
+              onClick={handleDelete}
             >
               <TrashIcon className="text-red-700 hover:text-red-100" />
             </Button>
