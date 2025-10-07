@@ -55,10 +55,14 @@ function dateToTimeString(date: Date | undefined): string {
  * @return undefined - Returns undefined when the date given is undefined.
  */
 function setTimeOnDate(time: string, date: Date | undefined): Date | undefined {
-  if (!date) return
-  const newDate = new Date(date)
-  newDate.setHours(...parseTimeString(time))
-  return newDate
+  if (!date) {
+    const newDate = new Date();
+    newDate.setHours(...parseTimeString(time));
+    return newDate;
+  }
+  const newDate = new Date(date);
+  newDate.setHours(...parseTimeString(time));
+  return newDate;
 }
 
 /**
@@ -67,12 +71,7 @@ function setTimeOnDate(time: string, date: Date | undefined): Date | undefined {
  * Provides a component that has a calendar modal and a time picker.
  */
 export function DateTimePicker({ initialDate, onSelect }: DateTimePickerProps) {
-  const [open, setOpen] = React.useState(false)
-  const [time, setTime] = React.useState<string>(DEFAULT_TIME)
-
-  React.useEffect(() => {
-    onSelect(setTimeOnDate(time, initialDate))
-  }, [time])
+  const [open, setOpen] = React.useState(false);
 
   return (
     <div className="flex gap-4">
@@ -97,8 +96,10 @@ export function DateTimePicker({ initialDate, onSelect }: DateTimePickerProps) {
               selected={initialDate}
               captionLayout="dropdown"
               onSelect={(date) => {
-                onSelect(setTimeOnDate(time, date as Date))
-                setOpen(false)
+                onSelect(
+                  setTimeOnDate(dateToTimeString(initialDate), date as Date),
+                );
+                setOpen(false);
               }}
             />
           </PopoverContent>
@@ -114,7 +115,7 @@ export function DateTimePicker({ initialDate, onSelect }: DateTimePickerProps) {
           step="1"
           value={dateToTimeString(initialDate)}
           onChange={(e) => {
-            setTime(e.target.value)
+            onSelect(setTimeOnDate(e.target.value, initialDate));
           }}
           className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
         />
