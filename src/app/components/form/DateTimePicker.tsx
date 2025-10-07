@@ -1,27 +1,27 @@
-"use client"
-import * as React from "react"
-import { ChevronDownIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+"use client";
+import * as React from "react";
+import { ChevronDownIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 
 /**
  * Properties for DateTimePicker
  */
 interface DateTimePickerProps {
   /** The initial date object to set on the calendar, passing undefined will show `Select a date` instead. */
-  initialDate: Date | undefined
+  initialDate: Date | undefined;
   /** The callback to update the initial date object. */
-  onSelect: (date: Date | undefined) => void
+  onSelect: (date: Date | undefined) => void;
 }
 
-const DEFAULT_TIME = "10:30:00"
+const DEFAULT_TIME = "10:30:00";
 /**
  * Parse a time string in "HH:mm:ss" format into [hour, minute, second].
  * Assumes 24-hour format with zero-padded values.
@@ -30,7 +30,7 @@ const DEFAULT_TIME = "10:30:00"
  * @return Tuple [hour, minute, second].
  */
 function parseTimeString(time: string): [number, number, number] {
-  return time.split(":").map(Number) as [number, number, number]
+  return time.split(":").map(Number) as [number, number, number];
 }
 
 /**
@@ -38,13 +38,13 @@ function parseTimeString(time: string): [number, number, number] {
  * @param `date` - Date object to extract the time from.
  * @return string - Time string formatted in "HH:mm"
  */
-function dateToTimeString(date: Date): string {
-  if (!date || isNaN(date.getTime())) return DEFAULT_TIME
+function dateToTimeString(date: Date | undefined): string {
+  if (!date || isNaN(date.getTime())) return DEFAULT_TIME;
   return new Intl.DateTimeFormat("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: false,
-  }).format(date)
+  }).format(date);
 }
 
 /**
@@ -120,5 +120,5 @@ export function DateTimePicker({ initialDate, onSelect }: DateTimePickerProps) {
         />
       </div>
     </div>
-  )
+  );
 }
