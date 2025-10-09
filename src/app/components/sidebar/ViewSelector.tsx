@@ -15,7 +15,9 @@ function ViewSelector() {
       variant="outline"
       className="bg-background"
       value={range}
-      onValueChange={(value: View) => setRange(value)}
+      onValueChange={(value: View) => {
+        if (value) setRange(value);
+      }}
     >
       {views.map(({ value, label }) => (
         <ToggleGroupItem key={value} value={value}>
