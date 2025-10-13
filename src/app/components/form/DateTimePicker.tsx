@@ -10,6 +10,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Calendar as CalendarIcon } from "lucide-react";
 
 /**
  * Properties for DateTimePicker
@@ -92,7 +98,10 @@ export function DateTimePicker({
               id="date-picker"
               className="w-full justify-between font-normal"
             >
-              {initialDate ? initialDate.toLocaleString() : "Select date"}
+              <div className="flex items-center">
+                <CalendarIcon className="mr-1 text-muted-foreground" />
+                {initialDate ? initialDate.toLocaleString() : "Select date"}
+              </div>
               <ChevronDownIcon />
             </Button>
           </PopoverTrigger>
@@ -128,16 +137,19 @@ function TimeInput({ initialDate, onSelect, label }: DateTimePickerProps) {
       <Label htmlFor="time-picker" className="px-1">
         {label}
       </Label>
-      <Input
-        type="time"
-        id="time-picker"
-        step="1"
-        value={dateToTimeString(initialDate)}
-        onChange={(e) => {
-          onSelect(setTimeOnDate(e.target.value, initialDate));
-        }}
-        className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-      />
+      <InputGroup>
+        <InputGroupAddon></InputGroupAddon>
+        <InputGroupInput
+          type="time"
+          id="time-picker"
+          step="1"
+          value={dateToTimeString(initialDate)}
+          onChange={(e) => {
+            onSelect(setTimeOnDate(e.target.value, initialDate));
+          }}
+          className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+        />
+      </InputGroup>
     </div>
   );
 }
