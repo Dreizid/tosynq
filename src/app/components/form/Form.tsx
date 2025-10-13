@@ -47,7 +47,7 @@ const formSchema = z
     path: ["to"],
   });
 
-function EventForm({
+function NewForm({
   title,
   description,
   from,
@@ -115,38 +115,36 @@ function EventForm({
               </FormItem>
             )}
           />
-          <div className="grid grid-cols-2">
-            <FormField
-              control={form.control}
-              name="from"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <DateTimePicker
-                      initialDate={field.value}
-                      onSelect={field.onChange}
-                      label="From"
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="to"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <DateTimePicker
-                      initialDate={field.value}
-                      onSelect={field.onChange}
-                      label="To"
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
+          <FormField
+            control={form.control}
+            name="from"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>From</FormLabel>
+                <FormControl>
+                  <DateTimePicker
+                    initialDate={field.value}
+                    onSelect={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="to"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>To</FormLabel>
+                <FormControl>
+                  <DateTimePicker
+                    initialDate={field.value}
+                    onSelect={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
           <Button type="submit">{eventId ? "Update" : "Submit"}</Button>
         </form>
       </Form>
@@ -154,4 +152,4 @@ function EventForm({
   );
 }
 
-export default EventForm;
+export default NewForm;

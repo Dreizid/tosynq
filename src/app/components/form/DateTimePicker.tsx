@@ -19,6 +19,8 @@ interface DateTimePickerProps {
   initialDate: Date | undefined;
   /** The callback to update the initial date object. */
   onSelect: (date: Date | undefined) => void;
+  /** The label to display above the calendar drop down. */
+  label: string;
 }
 
 const DEFAULT_TIME = "10:30:00";
@@ -70,23 +72,27 @@ function setTimeOnDate(time: string, date: Date | undefined): Date | undefined {
  *
  * Provides a component that has a calendar modal and a time picker.
  */
-export function DateTimePicker({ initialDate, onSelect }: DateTimePickerProps) {
+export function DateTimePicker({
+  initialDate,
+  onSelect,
+  label,
+}: DateTimePickerProps) {
   const [open, setOpen] = React.useState(false);
 
   return (
     <div className="flex gap-4">
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 w-full pr-2">
         <Label htmlFor="date-picker" className="px-1">
-          Date
+          {label}
         </Label>
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
               id="date-picker"
-              className="w-32 justify-between font-normal"
+              className="w-full justify-between font-normal"
             >
-              {initialDate ? initialDate.toLocaleDateString() : "Select date"}
+              {initialDate ? initialDate.toLocaleString() : "Select date"}
               <ChevronDownIcon />
             </Button>
           </PopoverTrigger>
@@ -101,25 +107,37 @@ export function DateTimePicker({ initialDate, onSelect }: DateTimePickerProps) {
                 );
                 setOpen(false);
               }}
+              footer={
+                <TimeInput
+                  initialDate={initialDate}
+                  onSelect={onSelect}
+                  label=""
+                />
+              }
             />
           </PopoverContent>
         </Popover>
       </div>
-      <div className="flex flex-col gap-3">
-        <Label htmlFor="time-picker" className="px-1">
-          Time
-        </Label>
-        <Input
-          type="time"
-          id="time-picker"
-          step="1"
-          value={dateToTimeString(initialDate)}
-          onChange={(e) => {
-            onSelect(setTimeOnDate(e.target.value, initialDate));
-          }}
-          className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-        />
-      </div>
+    </div>
+  );
+}
+
+function TimeInput({ initialDate, onSelect, label }: DateTimePickerProps) {
+  return (
+    <div className="flex flex-col gap-3">
+      <Label htmlFor="time-picker" className="px-1">
+        {label}
+      </Label>
+      <Input
+        type="time"
+        id="time-picker"
+        step="1"
+        value={dateToTimeString(initialDate)}
+        onChange={(e) => {
+          onSelect(setTimeOnDate(e.target.value, initialDate));
+        }}
+        className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+      />
     </div>
   );
 }
