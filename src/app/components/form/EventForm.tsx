@@ -1,20 +1,23 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { DateTimePicker } from "@/app/components/form/DateTimePicker";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
+import { Controller, useForm } from "react-hook-form";
 import { addTask, updateTask } from "../../lib/db/dbActions";
 import { SourceType, TaskType } from "@/app/lib/db/dexie";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Tag, AlignJustify } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface DefaultFormValues {
   title?: string;
@@ -63,6 +66,7 @@ function EventForm({
       from: from ?? undefined,
       to: to ?? undefined,
     },
+    mode: "onBlur",
   });
 
   async function submitTask(values: z.infer<typeof formSchema>) {
@@ -90,66 +94,94 @@ function EventForm({
   }
 
   return (
-    <div className={`${className} mt-4`}>
-      <Form {...form}>
-        <form className="grid gap-4" onSubmit={form.handleSubmit(submitTask)}>
-          <FormField
-            control={form.control}
+    <div className={`${className} mt-2`}>
+      <form id="form-event" onSubmit={form.handleSubmit(submitTask)}>
+        <FieldGroup>
+          <Controller
             name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input placeholder="Title" {...field} />
-                </FormControl>
-              </FormItem>
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor={field.name}>Title</FieldLabel>
+                <InputGroup>
+                  <InputGroupInput
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Title"
+                    autoComplete="off"
+                  />
+                  <InputGroupAddon>
+                    <Tag />
+                  </InputGroupAddon>
+                </InputGroup>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
             )}
           />
-          <FormField
-            control={form.control}
+          <Controller
             name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea placeholder="Description" {...field} />
-                </FormControl>
-              </FormItem>
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor={field.name}>Description</FieldLabel>
+                <InputGroup>
+                  <InputGroupInput
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Description"
+                    autoComplete="off"
+                  />
+                  <InputGroupAddon>
+                    <AlignJustify />
+                  </InputGroupAddon>
+                </InputGroup>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
             )}
           />
           <div className="grid grid-cols-2">
-            <FormField
-              control={form.control}
+            <Controller
               name="from"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <DateTimePicker
-                      initialDate={field.value}
-                      onSelect={field.onChange}
-                      label="From"
-                    />
-                  </FormControl>
-                </FormItem>
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <DateTimePicker
+                    initialDate={field.value}
+                    onSelect={field.onChange}
+                    label="From"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
-            <FormField
-              control={form.control}
+            <Controller
               name="to"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <DateTimePicker
-                      initialDate={field.value}
-                      onSelect={field.onChange}
-                      label="To"
-                    />
-                  </FormControl>
-                </FormItem>
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <DateTimePicker
+                    initialDate={field.value}
+                    onSelect={field.onChange}
+                    label="To"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
           </div>
           <Button type="submit">{eventId ? "Update" : "Submit"}</Button>
-        </form>
-      </Form>
+        </FieldGroup>
+      </form>
     </div>
   );
 }
