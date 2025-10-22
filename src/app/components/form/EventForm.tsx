@@ -18,6 +18,9 @@ import {
 } from "@/components/ui/input-group";
 import { Tag, AlignJustify } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 interface DefaultFormValues {
   title?: string;
@@ -44,6 +47,7 @@ const formSchema = z
       error: "End date is required",
     }),
     description: z.string().max(200).optional(),
+    allDay: z.boolean(),
   })
   .refine((data) => !data.from || !data.to || data.to > data.from, {
     message: "End date must be after start date",
@@ -65,6 +69,7 @@ function EventForm({
       description: description ?? "",
       from: from ?? undefined,
       to: to ?? undefined,
+      allDay: false,
     },
     mode: "onBlur",
   });
@@ -81,7 +86,7 @@ function EventForm({
         createdAt: new Date(),
         source: "manual" as SourceType,
         deleted: false,
-        allDay: false,
+        allDay: values.allDay,
       };
       if (eventId) {
         await updateTask({ id: eventId, ...baseValues });
@@ -145,7 +150,7 @@ function EventForm({
               </Field>
             )}
           />
-          <div className="grid grid-cols-2">
+          <div className="flex flex-row">
             <Controller
               name="from"
               control={form.control}
@@ -175,6 +180,24 @@ function EventForm({
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
+                </Field>
+              )}
+            />
+          </div>
+          <div className="ml-auto">
+            <Controller
+              name="allDay"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <div className="flex items-center justify-center mr-auto">
+                    <FieldLabel className="mr-2">All day</FieldLabel>
+                    <Switch
+                      id={field.name}
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </div>
                 </Field>
               )}
             />
