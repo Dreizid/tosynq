@@ -10,27 +10,10 @@ function FormDialog({
   open: boolean;
   onOpenChange: () => void;
 }) {
-  const tabs = [
-    {
-      label: "Task",
-      value: "task",
-      content: <TaskForm />,
-      contentTitle: "Add a task",
-    },
-    {
-      label: "Event",
-      value: "event",
-      content: <EventForm />,
-      contentTitle: "Add an event",
-    },
-  ];
   return (
-    <ContentDialog
-      open={open}
-      onOpenChange={onOpenChange}
-      tabs={[...tabs]}
-      defaultTab="event"
-    />
+    <ContentDialog open={open} onOpenChange={onOpenChange} title="Add an event">
+      <EventForm />
+    </ContentDialog>
   );
 }
 
