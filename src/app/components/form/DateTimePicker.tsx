@@ -3,7 +3,6 @@ import * as React from "react";
 import { ChevronDownIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Popover,
@@ -15,7 +14,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { Calendar as CalendarIcon, Clock } from "lucide-react";
 
 /**
  * Properties for DateTimePicker
@@ -138,7 +137,9 @@ function TimeInput({ initialDate, onSelect, label }: DateTimePickerProps) {
         {label}
       </Label>
       <InputGroup>
-        <InputGroupAddon></InputGroupAddon>
+        <InputGroupAddon>
+          <Clock />
+        </InputGroupAddon>
         <InputGroupInput
           type="time"
           id="time-picker"
@@ -147,7 +148,6 @@ function TimeInput({ initialDate, onSelect, label }: DateTimePickerProps) {
           onChange={(e) => {
             onSelect(setTimeOnDate(e.target.value, initialDate));
           }}
-          className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
         />
       </InputGroup>
     </div>
