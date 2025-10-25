@@ -26,6 +26,7 @@ interface DateTimePickerProps {
   onSelect: (date: Date | undefined) => void;
   /** The label to display above the calendar drop down. */
   label: string;
+  id?: string;
 }
 
 const DEFAULT_TIME = "10:30:00";
@@ -81,51 +82,53 @@ export function DateTimePicker({
   initialDate,
   onSelect,
   label,
+  id,
 }: DateTimePickerProps) {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <div className="flex gap-4">
-      <div className="flex flex-col gap-3 w-full pr-2">
-        <Label htmlFor="date-picker" className="px-1">
-          {label}
-        </Label>
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              id="date-picker"
-              className="w-full justify-between font-normal"
-            >
-              <div className="flex items-center">
-                <CalendarIcon className="mr-1 text-muted-foreground" />
-                {initialDate ? initialDate.toLocaleString() : "Select date"}
-              </div>
-              <ChevronDownIcon />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto overflow-hidden p-0" align="start">
-            <Calendar
-              mode="single"
-              selected={initialDate}
-              captionLayout="dropdown"
-              onSelect={(date) => {
-                onSelect(
-                  setTimeOnDate(dateToTimeString(initialDate), date as Date),
-                );
-                setOpen(false);
-              }}
-              footer={
-                <TimeInput
-                  initialDate={initialDate}
-                  onSelect={onSelect}
-                  label=""
-                />
-              }
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
+    <div className="flex flex-col gap-2">
+      <Label
+        htmlFor={id}
+        className="w-auto inline pointer-events-none select-none"
+      >
+        {label}
+      </Label>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            id={id}
+            className="justify-between font-normal"
+          >
+            <div className="flex items-center">
+              <CalendarIcon className="mr-1 text-muted-foreground" />
+              {initialDate ? initialDate.toLocaleString() : "Select date"}
+            </div>
+            <ChevronDownIcon />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={initialDate}
+            captionLayout="dropdown"
+            onSelect={(date) => {
+              onSelect(
+                setTimeOnDate(dateToTimeString(initialDate), date as Date),
+              );
+              setOpen(false);
+            }}
+            footer={
+              <TimeInput
+                initialDate={initialDate}
+                onSelect={onSelect}
+                label=""
+              />
+            }
+          />
+        </PopoverContent>
+      </Popover>
     </div>
   );
 }

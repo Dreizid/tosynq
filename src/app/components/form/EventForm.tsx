@@ -18,9 +18,7 @@ import {
 } from "@/components/ui/input-group";
 import { Tag, AlignJustify } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 
 interface DefaultFormValues {
   title?: string;
@@ -150,7 +148,7 @@ function EventForm({
               </Field>
             )}
           />
-          <div className="flex flex-row">
+          <div className="grid grid-cols-2 gap-2 bg-slate-300">
             <Controller
               name="from"
               control={form.control}
@@ -160,6 +158,7 @@ function EventForm({
                     initialDate={field.value}
                     onSelect={field.onChange}
                     label="From"
+                    id="from-picker"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -176,6 +175,7 @@ function EventForm({
                     initialDate={field.value}
                     onSelect={field.onChange}
                     label="To"
+                    id="to-picker"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
