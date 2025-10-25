@@ -26,7 +26,6 @@ interface DateTimePickerProps {
   onSelect: (date: Date | undefined) => void;
   /** The label to display above the calendar drop down. */
   label: string;
-  id?: string;
 }
 
 const DEFAULT_TIME = "10:30:00";
@@ -82,25 +81,17 @@ export function DateTimePicker({
   initialDate,
   onSelect,
   label,
-  id,
 }: DateTimePickerProps) {
   const [open, setOpen] = React.useState(false);
 
   return (
     <div className="flex flex-col gap-2">
-      <Label
-        htmlFor={id}
-        className="w-auto inline pointer-events-none select-none"
-      >
+      <Label className="w-auto inline pointer-events-none select-none">
         {label}
       </Label>
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={setOpen} modal={true}>
         <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            id={id}
-            className="justify-between font-normal"
-          >
+          <Button variant="outline" className="justify-between font-normal">
             <div className="flex items-center">
               <CalendarIcon className="mr-1 text-muted-foreground" />
               {initialDate ? initialDate.toLocaleString() : "Select date"}
@@ -108,7 +99,7 @@ export function DateTimePicker({
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto overflow-hidden p-0" align="start">
+        <PopoverContent className="w-auto overflow-hidden p-0" align="center">
           <Calendar
             mode="single"
             selected={initialDate}

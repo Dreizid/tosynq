@@ -148,18 +148,19 @@ function EventForm({
               </Field>
             )}
           />
-          <div className="grid grid-cols-2 gap-2 bg-slate-300">
+          <div className="grid grid-cols-2 gap-2 ">
             <Controller
               name="from"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <DateTimePicker
-                    initialDate={field.value}
-                    onSelect={field.onChange}
-                    label="From"
-                    id="from-picker"
-                  />
+                  <div>
+                    <DateTimePicker
+                      initialDate={field.value}
+                      onSelect={field.onChange}
+                      label="From"
+                    />
+                  </div>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -175,7 +176,6 @@ function EventForm({
                     initialDate={field.value}
                     onSelect={field.onChange}
                     label="To"
-                    id="to-picker"
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
