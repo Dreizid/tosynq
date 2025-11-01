@@ -1,20 +1,24 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { DateTimePicker } from "@/app/components/form/DateTimePicker";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
+import { Controller, useForm } from "react-hook-form";
 import { addTask, updateTask } from "../../lib/db/dbActions";
 import { SourceType, TaskType } from "@/app/lib/db/dexie";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Tag, AlignJustify } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 
 interface DefaultFormValues {
   title?: string;
@@ -41,6 +45,7 @@ const formSchema = z
       error: "End date is required",
     }),
     description: z.string().max(200).optional(),
+    allDay: z.boolean(),
   })
   .refine((data) => !data.from || !data.to || data.to > data.from, {
     message: "End date must be after start date",
@@ -62,7 +67,9 @@ function EventForm({
       description: description ?? "",
       from: from ?? undefined,
       to: to ?? undefined,
+      allDay: false,
     },
+    mode: "onBlur",
   });
 
   async function submitTask(values: z.infer<typeof formSchema>) {
@@ -77,7 +84,7 @@ function EventForm({
         createdAt: new Date(),
         source: "manual" as SourceType,
         deleted: false,
-        allDay: false,
+        allDay: values.allDay,
       };
       if (eventId) {
         await updateTask({ id: eventId, ...baseValues });
@@ -90,66 +97,112 @@ function EventForm({
   }
 
   return (
-    <div className={`${className} mt-4`}>
-      <Form {...form}>
-        <form className="grid gap-4" onSubmit={form.handleSubmit(submitTask)}>
-          <FormField
-            control={form.control}
+    <div className={`${className} mt-2`}>
+      <form id="form-event" onSubmit={form.handleSubmit(submitTask)}>
+        <FieldGroup>
+          <Controller
             name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-semibold">Title</FormLabel>
-                <FormControl>
-                  <Input placeholder="Title" {...field} />
-                </FormControl>
-              </FormItem>
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor={field.name}>Title</FieldLabel>
+                <InputGroup>
+                  <InputGroupInput
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Title"
+                    autoComplete="off"
+                  />
+                  <InputGroupAddon>
+                    <Tag />
+                  </InputGroupAddon>
+                </InputGroup>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
             )}
           />
-          <FormField
-            control={form.control}
+          <Controller
             name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-semibold">Description</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="Description" {...field} />
-                </FormControl>
-              </FormItem>
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor={field.name}>Description</FieldLabel>
+                <InputGroup>
+                  <InputGroupInput
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Description"
+                    autoComplete="off"
+                  />
+                  <InputGroupAddon>
+                    <AlignJustify />
+                  </InputGroupAddon>
+                </InputGroup>
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
             )}
           />
-          <FormField
-            control={form.control}
-            name="from"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>From</FormLabel>
-                <FormControl>
+          <div className="grid grid-cols-2 gap-2 ">
+            <Controller
+              name="from"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
                   <DateTimePicker
                     initialDate={field.value}
                     onSelect={field.onChange}
+                    label="From"
                   />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="to"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>To</FormLabel>
-                <FormControl>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+            <Controller
+              name="to"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
                   <DateTimePicker
                     initialDate={field.value}
                     onSelect={field.onChange}
+                    label="To"
                   />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </div>
+          <div className="ml-auto">
+            <Controller
+              name="allDay"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <div className="flex items-center justify-center mr-auto">
+                    <FieldLabel className="mr-2">All day</FieldLabel>
+                    <Switch
+                      id={field.name}
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </div>
+                </Field>
+              )}
+            />
+          </div>
           <Button type="submit">{eventId ? "Update" : "Submit"}</Button>
-        </form>
-      </Form>
+        </FieldGroup>
+      </form>
     </div>
   );
 }
