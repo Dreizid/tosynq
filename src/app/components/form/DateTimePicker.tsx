@@ -25,7 +25,7 @@ interface DateTimePickerProps {
   /** The callback to update the initial date object. */
   onSelect: (date: Date | undefined) => void;
   /** The label to display above the calendar drop down. */
-  label: string;
+  label?: string;
 }
 
 const DEFAULT_TIME = "10:30:00";
@@ -114,7 +114,6 @@ export function DateTimePicker({
               <TimeInput
                 initialDate={initialDate}
                 onSelect={onSelect}
-                label=""
               />
             }
           />
