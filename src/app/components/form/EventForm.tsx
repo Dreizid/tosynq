@@ -154,13 +154,11 @@ function EventForm({
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <div>
-                    <DateTimePicker
-                      initialDate={field.value}
-                      onSelect={field.onChange}
-                      label="From"
-                    />
-                  </div>
+                  <DateTimePicker
+                    initialDate={field.value}
+                    onSelect={field.onChange}
+                    label="From"
+                  />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
