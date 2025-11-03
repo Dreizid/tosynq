@@ -8,11 +8,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Portal } from "@radix-ui/react-popover";
+import { PopoverArrow, Portal } from "@radix-ui/react-popover";
 import EventForm from "../form/EventForm";
 import { Button } from "@/components/ui/button";
 import { TrashIcon } from "lucide-react";
 import { removeTask } from "../../lib/db/dbActions";
+import EventOverview from "./EventOverview";
 
 function EventComponent({ event }: { event: EventApi }) {
   const [finished, setFinished] = useState<boolean>(false);
@@ -42,20 +43,11 @@ function EventComponent({ event }: { event: EventApi }) {
       </PopoverTrigger>
       <Portal>
         <PopoverContent className="w-full">
-          <div className="flex">
-            <Button
-              className="h-4 w-4 bg-transparent ml-auto"
-              onClick={handleDelete}
-            >
-              <TrashIcon className="text-red-700 hover:text-red-100" />
-            </Button>
-          </div>
-          <EventForm
-            eventId={dbId}
-            title={title}
+          <EventOverview
+            eventName={title}
+            fromDate={start}
+            toDate={end}
             description={description}
-            from={start ?? undefined}
-            to={end ?? undefined}
           />
         </PopoverContent>
       </Portal>
